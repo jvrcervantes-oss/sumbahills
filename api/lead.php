@@ -9,7 +9,6 @@ header('Content-Type: application/json; charset=utf-8');
 
 const SUPABASE_URL = 'https://vtulllundrfennhjddhc.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_B_ot_6lNVRLiWiEMtApYOQ_3Ho3xNUg';
-const MAIL_FROM = 'Sumba Hills <sumbahills@lawangproperties.com>';
 const BROCHURE_URL = 'https://sumbahills.lawangproperties.com/download/Sumba-Hills-Welcome-Brochure.pdf';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -100,20 +99,80 @@ curl_setopt_array($ch, [
 @curl_exec($ch);
 curl_close($ch);
 
-// Email con el folleto — mejor esfuerzo con mail() nativo (sin credenciales SMTP propias
-// todavía; si Hostinger no entrega bien, migrar a SMTP autenticado, ver reference_newsletter_lead_magnet).
-// Enlace al PDF, no adjunto: 18MB es demasiado para ir pegado a un correo.
-$subject = 'Your Sumba Hills brochure';
-$html = '<div style="font-family:sans-serif;color:#2E3437;max-width:480px;margin:0 auto">'
-      . '<h2 style="font-family:Georgia,serif;color:#104C4F;font-weight:normal">Sumba Hills</h2>'
-      . '<p>Thank you for your interest in Sumba Hills. Here is your welcome brochure:</p>'
-      . '<p><a href="' . BROCHURE_URL . '" style="display:inline-block;background:#485B37;color:#F5F0E6;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:bold">Download the brochure (PDF)</a></p>'
-      . '<p style="font-size:13px;color:#666">Questions? WhatsApp us at +62 811-3820-0932 or reply to this email at sumbahills@lawangproperties.com.</p>'
-      . '</div>';
-$headers = "MIME-Version: 1.0\r\n"
-         . "Content-Type: text/html; charset=UTF-8\r\n"
-         . "From: " . MAIL_FROM . "\r\n"
-         . "Reply-To: sumbahills@lawangproperties.com\r\n";
-@mail($email, $subject, $html, $headers);
+// Email con el folleto — SMTP autenticado (mismo cliente minimalista sin dependencias que
+// ya funciona en producción en B2K, ver proyectos/B2K/api/subscribe.php). Enlace al PDF,
+// no adjunto: 18MB es demasiado para ir pegado a un correo.
+// Config real (host/usuario/contraseña del buzón) SOLO en private/mail-config.php en el
+// servidor — nunca en git. Sin ese archivo, se salta el envío sin romper el resto (mejor esfuerzo).
+$mailCfgFile = __DIR__ . '/../private/mail-config.php';
+$emailed = false;
+if (file_exists($mailCfgFile)) {
+    $mailCfg = require $mailCfgFile;
+    $subject = 'Your Sumba Hills brochure';
+    $html = '<!DOCTYPE html><html><body style="margin:0;background:#F5F0E6;font-family:Arial,Helvetica,sans-serif;color:#2E3437">'
+          . '<div style="max-width:480px;margin:0 auto;padding:32px 24px">'
+          . '<h1 style="font-size:22px;color:#104C4F;margin:0 0 8px">Sumba Hills</h1>'
+          . '<p style="font-size:15px;line-height:1.6">Thank you for your interest in Sumba Hills. Here is your welcome brochure:</p>'
+          . '<p style="margin:24px 0"><a href="' . BROCHURE_URL . '" style="background:#485B37;color:#F5F0E6;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block">Download the brochure (PDF)</a></p>'
+          . '<p style="font-size:13px;color:#666">Any questions? WhatsApp us at +62 811-3820-0932 or reply to this email.</p>'
+          . '</div></body></html>';
+    list($emailed, ) = smtp_send($mailCfg, $email, $subject, $html);
+}
 
 echo json_encode(['ok' => true]);
+
+/**
+ * Cliente SMTP minimalista sobre SSL (puerto 465) — copiado tal cual de
+ * proyectos/B2K/api/subscribe.php (ya validado en producción, sin dependencias).
+ */
+function smtp_send($cfg, $to, $subject, $html) {
+    $host   = $cfg['smtp_host'] ?? 'smtp.hostinger.com';
+    $port   = (int)($cfg['smtp_port'] ?? 465);
+    $secure = $cfg['smtp_secure'] ?? 'ssl';
+    $user   = $cfg['smtp_user'] ?? '';
+    $pass   = $cfg['smtp_pass'] ?? '';
+    $fromE  = $cfg['from_email'] ?? $user;
+    $fromN  = $cfg['from_name'] ?? 'Sumba Hills';
+
+    $remote = ($secure === 'ssl' ? 'ssl://' : '') . $host . ':' . $port;
+    $fp = @stream_socket_client($remote, $errno, $errstr, 20);
+    if (!$fp) return [false, "connect: $errstr"];
+    stream_set_timeout($fp, 20);
+
+    $read = function () use ($fp) {
+        $d = '';
+        while ($line = fgets($fp, 515)) {
+            $d .= $line;
+            if (strlen($line) >= 4 && $line[3] === ' ') break;
+        }
+        return $d;
+    };
+    $cmd = function ($c) use ($fp, $read) { fwrite($fp, $c . "\r\n"); return $read(); };
+
+    $read();                               // saludo 220
+    $cmd('EHLO lawangproperties.com');
+    $cmd('AUTH LOGIN');
+    $cmd(base64_encode($user));
+    $a = $cmd(base64_encode($pass));
+    if (strpos($a, '235') === false) { fclose($fp); return [false, 'auth: ' . trim($a)]; }
+
+    $cmd('MAIL FROM:<' . $fromE . '>');
+    $r = $cmd('RCPT TO:<' . $to . '>');
+    if (strpos($r, '250') === false && strpos($r, '251') === false) { fclose($fp); return [false, 'rcpt: ' . trim($r)]; }
+    $cmd('DATA');
+
+    $headers  = 'From: ' . mb_encode_mimeheader($fromN) . ' <' . $fromE . ">\r\n";
+    $headers .= 'To: <' . $to . ">\r\n";
+    $headers .= 'Subject: ' . mb_encode_mimeheader($subject) . "\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+    $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+    $headers .= 'Date: ' . date('r') . "\r\n";
+
+    $body = preg_replace('/^\./m', '..', $html);          // dot-stuffing
+    fwrite($fp, $headers . "\r\n" . $body . "\r\n.\r\n");
+    $final = $read();
+    $cmd('QUIT');
+    fclose($fp);
+    return [strpos($final, '250') !== false, trim($final)];
+}
