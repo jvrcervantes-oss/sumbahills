@@ -1,9 +1,14 @@
 <?php
 /**
  * lead.php — captura de leads del formulario de interés (QR Sumba Hills).
- * Añade una fila a private/leads.csv. Sin dependencias externas.
+ * Añade una fila a private/leads.csv (fuente de verdad local) y, en mejor
+ * esfuerzo, replica el lead en la tabla `leads` del Supabase de Lawang
+ * (Sumba Hills es un subdominio de Lawang, mismo negocio).
  */
 header('Content-Type: application/json; charset=utf-8');
+
+const SUPABASE_URL = 'https://vtulllundrfennhjddhc.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_B_ot_6lNVRLiWiEMtApYOQ_3Ho3xNUg';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -27,7 +32,12 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 // Recorta campos para evitar inyección de CSV / payloads enormes
 $clean = function ($s) {
     $s = preg_replace('/[\r\n]+/', ' ', $s);
-    return mb_substr($s, 0, 200);
+    $s = mb_substr($s, 0, 200);
+    // Anti inyección de fórmula CSV (Excel ejecuta celdas que empiezan por = + - @)
+    if ($s !== '' && strpos('=+-@', $s[0]) !== false) {
+        $s = "'" . $s;
+    }
+    return $s;
 };
 $name     = $clean($name);
 $whatsapp = $clean(preg_replace('/[^\d+]/', '', $whatsapp));
@@ -59,5 +69,27 @@ fputcsv($fh, [
     $_SERVER['REMOTE_ADDR'] ?? '',
 ]);
 fclose($fh);
+
+// Réplica en Supabase — mejor esfuerzo: si falla, el lead ya está a salvo en el CSV de arriba.
+$ch = curl_init(SUPABASE_URL . '/rest/v1/leads');
+curl_setopt_array($ch, [
+    CURLOPT_POST => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 5,
+    CURLOPT_HTTPHEADER => [
+        'apikey: ' . SUPABASE_ANON_KEY,
+        'Authorization: Bearer ' . SUPABASE_ANON_KEY,
+        'Content-Type: application/json',
+        'Prefer: return=minimal',
+    ],
+    CURLOPT_POSTFIELDS => json_encode([
+        'email'   => $email,
+        'source'  => $source,
+        'project' => $property,
+        'ip'      => $_SERVER['REMOTE_ADDR'] ?? '',
+    ]),
+]);
+@curl_exec($ch);
+curl_close($ch);
 
 echo json_encode(['ok' => true]);
