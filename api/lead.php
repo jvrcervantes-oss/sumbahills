@@ -105,8 +105,6 @@ curl_close($ch);
 // Config real (host/usuario/contraseña del buzón) SOLO en private/mail-config.php en el
 // servidor — nunca en git. Sin ese archivo, se salta el envío sin romper el resto (mejor esfuerzo).
 $mailCfgFile = __DIR__ . '/../private/mail-config.php';
-$emailed = false;
-$emailDebug = 'no config file';
 if (file_exists($mailCfgFile)) {
     $mailCfg = require $mailCfgFile;
     $subject = 'Your Sumba Hills brochure';
@@ -117,13 +115,7 @@ if (file_exists($mailCfgFile)) {
           . '<p style="margin:24px 0"><a href="' . BROCHURE_URL . '" style="background:#485B37;color:#F5F0E6;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block">Download the brochure (PDF)</a></p>'
           . '<p style="font-size:13px;color:#666">Any questions? WhatsApp us at +62 811-3820-0932 or reply to this email.</p>'
           . '</div></body></html>';
-    list($emailed, $emailDebug) = smtp_send($mailCfg, $email, $subject, $html);
-}
-
-// DEBUG TEMPORAL — solo visible con el token, se retira en cuanto se confirme el envío.
-if (($_GET['debug'] ?? '') === 'sumbahills2026diag') {
-    echo json_encode(['ok' => true, 'emailed' => $emailed, 'debug' => $emailDebug]);
-    exit;
+    smtp_send($mailCfg, $email, $subject, $html);
 }
 
 echo json_encode(['ok' => true]);
