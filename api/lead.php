@@ -9,6 +9,8 @@ header('Content-Type: application/json; charset=utf-8');
 
 const SUPABASE_URL = 'https://vtulllundrfennhjddhc.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_B_ot_6lNVRLiWiEMtApYOQ_3Ho3xNUg';
+const MAIL_FROM = 'Sumba Hills <sumbahills@lawangproperties.com>';
+const BROCHURE_URL = 'https://sumbahills.lawangproperties.com/download/Sumba-Hills-Welcome-Brochure.pdf';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -97,5 +99,21 @@ curl_setopt_array($ch, [
 ]);
 @curl_exec($ch);
 curl_close($ch);
+
+// Email con el folleto — mejor esfuerzo con mail() nativo (sin credenciales SMTP propias
+// todavía; si Hostinger no entrega bien, migrar a SMTP autenticado, ver reference_newsletter_lead_magnet).
+// Enlace al PDF, no adjunto: 18MB es demasiado para ir pegado a un correo.
+$subject = 'Your Sumba Hills brochure';
+$html = '<div style="font-family:sans-serif;color:#2E3437;max-width:480px;margin:0 auto">'
+      . '<h2 style="font-family:Georgia,serif;color:#104C4F;font-weight:normal">Sumba Hills</h2>'
+      . '<p>Thank you for your interest in Sumba Hills. Here is your welcome brochure:</p>'
+      . '<p><a href="' . BROCHURE_URL . '" style="display:inline-block;background:#485B37;color:#F5F0E6;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:bold">Download the brochure (PDF)</a></p>'
+      . '<p style="font-size:13px;color:#666">Questions? WhatsApp us at +62 811-3820-0932 or reply to this email at sumbahills@lawangproperties.com.</p>'
+      . '</div>';
+$headers = "MIME-Version: 1.0\r\n"
+         . "Content-Type: text/html; charset=UTF-8\r\n"
+         . "From: " . MAIL_FROM . "\r\n"
+         . "Reply-To: sumbahills@lawangproperties.com\r\n";
+@mail($email, $subject, $html, $headers);
 
 echo json_encode(['ok' => true]);
