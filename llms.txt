@@ -1,0 +1,9 @@
+# Sumba Hills
+
+> A new real estate project by Lawang in Sumba, Indonesia. Details are being finalized; this page collects interest from prospective buyers (name, WhatsApp, email).
+
+## Key facts
+- Developer: Lawang (see https://lawangproperties.com)
+- Location: Sumba, Indonesia
+- Status: details coming soon
+- Contact: register interest at https://sumbahill.com/
