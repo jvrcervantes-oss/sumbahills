@@ -106,17 +106,18 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #e7d9
 
     <form id="subscribeForm" class="sh-anim-fade-4" novalidate style="margin-top:36px;width:min(440px,90vw)">
       <div>
-        <label for="sh-email" style="display:block;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(243,239,231,.6);margin-bottom:12px">Be the first to receive the details</label>
+        <label for="sh-email" style="display:block;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(243,239,231,.6);margin-bottom:12px">Enter your email to download the welcome brochure</label>
         <div style="display:flex;gap:0;border:1px solid rgba(243,239,231,.35);border-radius:2px;overflow:hidden;background:rgba(11,15,16,.4);backdrop-filter:blur(6px)">
           <input id="sh-email" name="email" type="email" required autocomplete="email" placeholder="tu@email.com" style="flex:1;min-width:0;background:transparent;border:none;outline:none;color:#f3efe7;font-family:'Jost',sans-serif;font-size:14px;padding:14px 16px">
-          <button type="submit" class="sh-btn">Notify me</button>
+          <button type="submit" class="sh-btn">Get the brochure</button>
         </div>
         <div class="sh-err" data-err></div>
       </div>
     </form>
 
     <div id="subscribeThanks" class="sh-anim-fade-4" hidden>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:#e7d9bf">Thank you. We'll let you know when reservations open.</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;color:#e7d9bf">Thank you.</p>
+      <a id="sh-download" href="download/Sumba-Hills-Welcome-Brochure.pdf" download style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;border:1px solid rgba(231,217,191,.5);border-radius:2px;padding:12px 22px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#e7d9bf">Download the brochure (PDF)</a>
     </div>
   </section>
 
@@ -146,7 +147,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #e7d9
     var btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
 
-    var body = 'email=' + encodeURIComponent(email) + '&source=sumbahills-comingsoon&property=sumba-hills';
+    var body = 'email=' + encodeURIComponent(email) + '&source=sumbahills-brochure&property=sumba-hills';
 
     fetch('api/lead.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
       .then(function(r){ return r.json(); })
