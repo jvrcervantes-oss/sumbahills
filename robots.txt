@@ -19,4 +19,4 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-Sitemap: https://sumbahill.com/sitemap.xml
+Sitemap: https://sumbahills.lawangproperties.com/sitemap.xml
