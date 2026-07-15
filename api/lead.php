@@ -29,20 +29,24 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-// Recorta campos para evitar inyección de CSV / payloads enormes
+// Recorta campos para evitar payloads enormes (no toca el contenido)
 $clean = function ($s) {
     $s = preg_replace('/[\r\n]+/', ' ', $s);
-    $s = mb_substr($s, 0, 200);
-    // Anti inyección de fórmula CSV (Excel ejecuta celdas que empiezan por = + - @)
-    if ($s !== '' && strpos('=+-@', $s[0]) !== false) {
-        $s = "'" . $s;
-    }
-    return $s;
+    return mb_substr($s, 0, 200);
 };
 $name     = $clean($name);
 $whatsapp = $clean(preg_replace('/[^\d+]/', '', $whatsapp));
 $source   = $clean($source);
 $property = $clean($property);
+
+// Anti inyección de fórmula CSV (Excel ejecuta celdas que empiezan por = + - @) — SOLO para el CSV,
+// nunca para los valores que van a Supabase (corromperían el número/nombre real).
+$csvSafe = function ($s) {
+    if ($s !== '' && strpos('=+-@', $s[0]) !== false) {
+        return "'" . $s;
+    }
+    return $s;
+};
 
 // private/ no es servible por web (fuera del docroot lógico); se crea si falta
 $dir = __DIR__ . '/../private';
@@ -61,11 +65,11 @@ if ($new) {
 }
 fputcsv($fh, [
     date('c'),
-    $email,
-    $name,
-    $whatsapp,
-    $source,
-    $property,
+    $csvSafe($email),
+    $csvSafe($name),
+    $csvSafe($whatsapp),
+    $csvSafe($source),
+    $csvSafe($property),
     $_SERVER['REMOTE_ADDR'] ?? '',
 ]);
 fclose($fh);
