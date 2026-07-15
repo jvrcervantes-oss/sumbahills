@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sumba Hills · Register Your Interest · Lawang</title>
-<meta name="description" content="Sumba Hills, a new Lawang project in Sumba, Indonesia. Register your interest and our team will contact you with full details.">
+<meta name="description" content="Sumba Hills, a Lawang project in Sumba, Indonesia. Leave your details and we'll send you our dossier with more information.">
 <link rel="canonical" href="https://sumbahills.lawangproperties.com/qr.html">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="robots" content="noindex,follow">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sumba Hills · Lawang">
-<meta property="og:description" content="A new Lawang project in Sumba, Indonesia. Register your interest — details coming soon.">
+<meta property="og:description" content="A Lawang project in Sumba, Indonesia. Leave your details and we'll send you our dossier.">
 <meta property="og:url" content="https://sumbahills.lawangproperties.com/qr.html">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,17 +35,18 @@
 body{background:var(--rl);color:var(--va);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
 a{color:var(--tg)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tg);outline-offset:2px}
-.top{max-width:560px;margin:0 auto;padding:28px clamp(20px,6vw,40px) 0;display:flex;justify-content:flex-end;align-items:center}
+.top{max-width:560px;margin:0 auto;padding:14px clamp(20px,6vw,40px) 0;display:flex;justify-content:flex-end;align-items:center}
 .lang-toggle{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:3px}
 .lang-toggle button{background:none;border:none;border-radius:999px;padding:5px 14px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;color:var(--va)}
 .lang-toggle button[aria-pressed="true"]{background:var(--tg);color:var(--rl)}
-main{max-width:560px;margin:0 auto;padding:clamp(28px,6vh,48px) clamp(20px,6vw,40px) clamp(48px,8vh,72px)}
+main{max-width:560px;margin:0 auto;padding:clamp(10px,2.5vh,28px) clamp(20px,6vw,40px) clamp(40px,7vh,64px)}
 .eyebrow{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--tg);margin:0 0 10px;font-weight:600}
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(36px,8vw,52px);color:var(--dl);line-height:1.08;margin:0 0 14px}
-.lede{font-size:clamp(15px,2vw,17px);color:rgba(46,52,55,.82);margin:0 0 32px;max-width:46ch}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(32px,8vw,52px);color:var(--dl);line-height:1.08;margin:0 0 14px}
+.lede{font-size:clamp(15px,2vw,17px);color:rgba(46,52,55,.82);margin:0 0 28px;max-width:46ch}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:clamp(22px,4vw,32px);box-shadow:0 18px 40px -20px rgba(16,76,79,.25)}
 form{display:flex;flex-direction:column;gap:16px}
 label{font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(46,52,55,.7);margin-bottom:7px;display:block}
+label .req{color:var(--tg)}
 .field{display:flex;flex-direction:column}
 input{font-family:var(--sans);font-size:16px;padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:var(--rl);color:var(--va);transition:border-color .15s,background .15s}
 input:focus{border-color:var(--tg);background:#fff}
@@ -86,57 +87,57 @@ footer{border-top:1px solid var(--line);max-width:560px;margin:40px auto 0;paddi
 
 <main>
   <section id="form-en" lang="en">
-    <div class="eyebrow">Lawang · New project</div>
+    <div class="eyebrow">Lawang</div>
     <h1>Sumba Hills</h1>
-    <p class="lede">Details are being finalized. Leave your contact and our team will reach out with the full information as soon as it's ready.</p>
+    <p class="lede">Leave us your details and we'll send you our dossier with more information.</p>
 
     <div class="card">
       <form id="leadForm-en" novalidate>
         <div class="field">
-          <label for="name-en">Name</label>
+          <label for="name-en">Name <span class="req">*</span></label>
           <input id="name-en" name="name" type="text" autocomplete="name" required>
           <div class="err" data-err="name"></div>
         </div>
         <div class="field">
-          <label for="whatsapp-en">WhatsApp number (with country code)</label>
+          <label for="whatsapp-en">WhatsApp number (with country code) <span class="req">*</span></label>
           <input id="whatsapp-en" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+62 812 3456 7890" required>
           <div class="err" data-err="whatsapp"></div>
         </div>
         <div class="field">
-          <label for="email-en">Email</label>
+          <label for="email-en">Email <span class="req">*</span></label>
           <input id="email-en" name="email" type="email" autocomplete="email" required>
           <div class="err" data-err="email"></div>
         </div>
-        <button type="submit">Register interest</button>
-        <p class="note">We'll only use your details to contact you about Sumba Hills.</p>
+        <button type="submit">Get the dossier</button>
+        <p class="note">* All fields required. We'll only use your details to contact you about Sumba Hills.</p>
       </form>
     </div>
   </section>
 
   <section id="form-es" lang="es" hidden>
-    <div class="eyebrow">Lawang · Nuevo proyecto</div>
+    <div class="eyebrow">Lawang</div>
     <h1>Sumba Hills</h1>
-    <p class="lede">Los detalles están cerrándose. Déjanos tu contacto y nuestro equipo se pondrá en contacto contigo con la información completa en cuanto esté lista.</p>
+    <p class="lede">Déjanos tus datos y te enviaremos nuestro dossier con más información.</p>
 
     <div class="card">
       <form id="leadForm-es" novalidate>
         <div class="field">
-          <label for="name-es">Nombre</label>
+          <label for="name-es">Nombre <span class="req">*</span></label>
           <input id="name-es" name="name" type="text" autocomplete="name" required>
           <div class="err" data-err="name"></div>
         </div>
         <div class="field">
-          <label for="whatsapp-es">WhatsApp (con prefijo de país)</label>
+          <label for="whatsapp-es">WhatsApp (con prefijo de país) <span class="req">*</span></label>
           <input id="whatsapp-es" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+34 612 345 678" required>
           <div class="err" data-err="whatsapp"></div>
         </div>
         <div class="field">
-          <label for="email-es">Email</label>
+          <label for="email-es">Email <span class="req">*</span></label>
           <input id="email-es" name="email" type="email" autocomplete="email" required>
           <div class="err" data-err="email"></div>
         </div>
-        <button type="submit">Registrar interés</button>
-        <p class="note">Solo usaremos tus datos para contactarte sobre Sumba Hills.</p>
+        <button type="submit">Quiero el dossier</button>
+        <p class="note">* Todos los campos son obligatorios. Solo usaremos tus datos para contactarte sobre Sumba Hills.</p>
       </form>
     </div>
   </section>
