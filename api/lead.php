@@ -83,10 +83,12 @@ curl_setopt_array($ch, [
         'Prefer: return=minimal',
     ],
     CURLOPT_POSTFIELDS => json_encode([
-        'email'   => $email,
-        'source'  => $source,
-        'project' => $property,
-        'ip'      => $_SERVER['REMOTE_ADDR'] ?? '',
+        'email'    => $email,
+        'name'     => $name !== '' ? $name : null,
+        'whatsapp' => $whatsapp !== '' ? $whatsapp : null,
+        'source'   => $source,
+        'project'  => $property,
+        'ip'       => $_SERVER['REMOTE_ADDR'] ?? '',
     ]),
 ]);
 @curl_exec($ch);
