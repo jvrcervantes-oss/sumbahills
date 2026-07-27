@@ -23,6 +23,11 @@ const PASS_HASH = '$2y$12$dKhplk1rUKhDHs/sLfk5wuFvj9L/Kxc8yOcpmtxtITecgfMcQJlt6'
 const CSV_FILE  = __DIR__ . '/private/leads.csv';
 const QR_SOURCE = 'sumba-hills-qr';   // el valor que manda qr.html
 
+// Condiciones del equipo que trabaja el QR (IDR). Un solo sitio donde tocarlas.
+const PAY_FIXED_MONTH = 2000000;
+const PAY_PER_LEAD    = 20000;
+const PAY_PER_CLOSED  = 5000000;
+
 if (isset($_GET['logout'])) {
     session_destroy();
     header('Location: leads.php');
@@ -76,6 +81,9 @@ function unquote($s) {
 }
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
+
+/** 2000000 → 'IDR 2.000.000' (separador de miles indonesio) */
+function idr($n) { return 'IDR ' . number_format((float)$n, 0, ',', '.'); }
 
 /** '2026-07-15T09:12:44+00:00' → '15 Jul 2026 · 09:12' */
 function fecha($iso) {
@@ -148,6 +156,20 @@ td a:hover{border-bottom-color:var(--tg)}
 .wa svg{width:16px;height:16px;flex:none;color:var(--wa)}
 .wa:hover{color:var(--tg)}
 .empty{padding:44px 24px;text-align:center;color:rgba(46,52,55,.55);font-size:14.5px}
+
+/* Condiciones del equipo */
+.terms{margin-top:26px}
+.terms h2{font-family:var(--sans);font-weight:500;font-size:clamp(19px,3vw,23px);color:var(--dl);margin:0 0 3px}
+.terms .sub{font-size:12.5px;color:rgba(46,52,55,.55);margin:0 0 14px}
+.rows{margin:0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row dt{font-size:14.5px;color:var(--va)}
+.row dd{margin:0;font-weight:600;color:var(--dl);white-space:nowrap;font-variant-numeric:tabular-nums}
+.accrued{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+.accrued .lbl{font-size:13px;color:rgba(46,52,55,.7)}
+.accrued .val{font-size:20px;font-weight:600;color:var(--tg);white-space:nowrap;font-variant-numeric:tabular-nums}
+.terms .foot{font-size:12.5px;color:rgba(46,52,55,.55);margin-top:12px}
 footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;padding:20px clamp(20px,6vw,40px) 36px;font-size:12px;color:rgba(46,52,55,.55)}
 @media (max-width:560px){th,td{padding:13px 14px}}
 </style>
@@ -221,6 +243,24 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
     </div>
     <?php endif; ?>
   </div>
+
+  <section class="card terms">
+    <h2>Team terms</h2>
+    <p class="sub">Compensation for the team working the printed QR.</p>
+    <dl class="rows">
+      <div class="row"><dt>Fixed salary</dt><dd><?= idr(PAY_FIXED_MONTH) ?> / month</dd></div>
+      <div class="row"><dt>Variable — per lead captured</dt><dd><?= idr(PAY_PER_LEAD) ?> / lead</dd></div>
+      <div class="row"><dt>Variable — per closed lead</dt><dd><?= idr(PAY_PER_CLOSED) ?> / closed lead</dd></div>
+    </dl>
+    <?php /* Solo se calcula lo que este panel sabe de verdad: los leads del QR. */ ?>
+    <?php if (!$csvMissing): ?>
+    <div class="accrued">
+      <span class="lbl"><?= count($rows) ?> lead<?= count($rows) === 1 ? '' : 's' ?> × <?= idr(PAY_PER_LEAD) ?> — variable earned on the leads listed above</span>
+      <span class="val"><?= idr(count($rows) * PAY_PER_LEAD) ?></span>
+    </div>
+    <?php endif; ?>
+    <p class="foot">All-time total, not this month. It leaves out the fixed salary and the closed-lead bonus: this panel tracks neither months worked nor which leads closed.</p>
+  </section>
 </main>
 <?php endif; ?>
 
