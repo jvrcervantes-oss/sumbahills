@@ -34,32 +34,8 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-$error      = '';
-$resetError = '';
-$isReset    = ($_SERVER['REQUEST_METHOD'] === 'POST') && (($_POST['action'] ?? '') === 'reset');
-
-// --- Reset: vacía el CSV dejando solo la cabecera ---------------------------
-// Pide la contraseña OTRA VEZ, no solo la sesión: sirve de confirmación y de paso
-// hace inútil un CSRF (quien lo intente desde fuera no la sabe).
-if ($isReset) {
-    if (empty($_SESSION['sh_leads_auth'])) {
-        http_response_code(403);
-        exit('Forbidden');
-    }
-    if (!password_verify($_POST['password'] ?? '', PASS_HASH)) {
-        usleep(700000);
-        $resetError = 'Wrong password — nothing was deleted.';
-    } else {
-        // Copia en el servidor antes de borrar. private/ no es accesible por web
-        // (RedirectMatch en el .htaccess de la raíz) y .csv está denegado además.
-        if (is_readable(CSV_FILE)) {
-            @copy(CSV_FILE, __DIR__ . '/private/leads-' . date('Ymd-His') . '.bak.csv');
-        }
-        file_put_contents(CSV_FILE, "timestamp,email,name,whatsapp,source,property,ip\n");
-        header('Location: leads.php?reset=1');
-        exit;
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (password_verify($_POST['password'] ?? '', PASS_HASH)) {
         session_regenerate_id(true);
         $_SESSION['sh_leads_auth'] = true;
@@ -69,8 +45,12 @@ if ($isReset) {
     usleep(700000);                      // frena el intento por fuerza bruta
     $error = 'Incorrect password.';
 }
-$auth      = !empty($_SESSION['sh_leads_auth']);
-$justReset = isset($_GET['reset']);
+$auth = !empty($_SESSION['sh_leads_auth']);
+
+// Este panel es SOLO LECTURA a propósito (27-jul-2026): lo usan los operadores del QR,
+// que no deben poder vaciar la lista. Hubo una acción de reset aquí y se retiró.
+// Para poner los leads a cero: hPanel > File Manager > public_html/sumbahills/private/
+// leads.csv, dejar únicamente la primera línea (la cabecera de columnas).
 
 // --- Lectura del CSV -------------------------------------------------------
 // Columnas: timestamp,email,name,whatsapp,source,property,ip
@@ -195,18 +175,6 @@ td a:hover{border-bottom-color:var(--tg)}
 .accrued .lbl{font-size:13px;color:rgba(46,52,55,.7)}
 .accrued .val{font-size:20px;font-weight:600;color:var(--tg);white-space:nowrap;font-variant-numeric:tabular-nums}
 .terms .foot{font-size:12.5px;color:rgba(46,52,55,.55);margin-top:12px}
-
-/* Aviso de reset hecho */
-.done{background:#fff;border:1px solid var(--line);border-left:3px solid var(--tg);border-radius:10px;padding:14px 18px;font-size:14px;margin:0 0 22px}
-
-/* Zona de reset */
-.danger{margin-top:26px;border-color:rgba(163,51,51,.28)}
-.danger h2{font-family:var(--sans);font-weight:500;font-size:clamp(19px,3vw,23px);color:#8a2f2f;margin:0 0 3px}
-.danger p{font-size:13.5px;color:rgba(46,52,55,.7);margin:0 0 16px;max-width:60ch}
-.danger form{flex-direction:row;align-items:flex-end;gap:12px;flex-wrap:wrap}
-.danger input{max-width:260px}
-.danger button{background:#8a2f2f;color:#fff;border:none;border-radius:9px;padding:15px 20px;font-family:var(--sans);font-weight:600;font-size:13.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .15s}
-.danger button:hover{background:#742727}
 footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;padding:20px clamp(20px,6vw,40px) 36px;font-size:12px;color:rgba(46,52,55,.55)}
 @media (max-width:560px){th,td{padding:13px 14px}}
 </style>
@@ -240,10 +208,6 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
     </div>
     <a class="logout" href="?logout=1">Log out</a>
   </div>
-
-  <?php if ($justReset): ?>
-  <p class="done">All leads deleted. A dated backup was saved on the server in <code>private/</code>.</p>
-  <?php endif; ?>
 
   <?php /* Con el CSV ilegible NO se enseña un contador: un conteo que falla no es un cero. */ ?>
   <?php if (!$csvMissing): ?>
@@ -301,20 +265,6 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
     </div>
     <?php endif; ?>
     <p class="foot">All-time total, not this month. It leaves out the fixed salary and the closed-lead bonus: this panel tracks neither months worked nor which leads closed.</p>
-  </section>
-
-  <section class="card danger">
-    <h2>Reset</h2>
-    <p>Deletes every lead in the list and starts the count from zero. A dated copy is saved on the server first, but the panel will no longer show these contacts — and the variable pay above goes back to zero with them.</p>
-    <form method="post" autocomplete="off" onsubmit="return confirm('Delete all leads? The list goes back to zero.')">
-      <input type="hidden" name="action" value="reset">
-      <div class="field">
-        <label for="resetpass">Confirm with the password</label>
-        <input id="resetpass" name="password" type="password" autocomplete="current-password" required>
-        <?php if ($resetError): ?><div class="err"><?= e($resetError) ?></div><?php endif; ?>
-      </div>
-      <button type="submit">Delete all leads</button>
-    </form>
   </section>
 </main>
 <?php endif; ?>
