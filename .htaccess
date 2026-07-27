@@ -1,0 +1,41 @@
+# ═══════════════════════════════════════════════════════════════════
+# Seguridad — AxisWorks · 27-jul-2026
+# Estándar: contexto/seguridad_2026.md §1 (sitio estático + PHP simple)
+#
+# MOTIVO DE URGENCIA: hasta hoy `private/leads.csv` se servía en abierto
+# (HTTP 200 en https://sumbahills.lawangproperties.com/private/leads.csv)
+# con nombre, WhatsApp, email e IP de cada lead — brecha RGPD/UU PDP.
+# `private/` está en .gitignore, así que un .htaccess DENTRO de esa carpeta
+# no lo repone ningún deploy (le pasó a Lawang el 8-jul-2026). Esta regla,
+# en la raíz, SÍ está versionada y vuelve con cada push.
+# ═══════════════════════════════════════════════════════════════════
+
+# ── 1. Cabeceras de seguridad ──────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# ── 2. Sin listado de directorios ──────────────────────────────────
+Options -Indexes
+
+# ── 3. Ficheros que nunca se sirven en público ─────────────────────
+# `csv` incluido: leads.csv son datos personales. Los .txt se dejan pasar
+# (robots.txt, llms.txt) y los .pdf también (el folleto es la descarga).
+<FilesMatch "\.(md|sql|zip|bak|log|csv|sh|ini|yml|yaml|psd|ai)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# ── 4. Carpeta privada y control de versiones ──────────────────────
+RedirectMatch 404 (?i)/\.git
+RedirectMatch 404 (?i)/private/
+RedirectMatch 404 (?i)/(Backups?|Deprecated)/
