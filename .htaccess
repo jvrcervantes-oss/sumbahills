@@ -39,3 +39,28 @@ Options -Indexes
 RedirectMatch 404 (?i)/\.git
 RedirectMatch 404 (?i)/private/
 RedirectMatch 404 (?i)/(Backups?|Deprecated)/
+
+# ── URLs limpias: /terms en vez de /terms.html ─────────────────────
+# Solo raiz y solo GET a proposito: las subcarpetas (api/, private/) son endpoints
+# con POST, y un 301 convierte un POST en GET — ahi romperia los formularios.
+# Cuidado al anadir alias: mod_rewrite corre ANTES que mod_alias, asi que un
+# "Redirect" hacia un .html se lo come la regla 1 y acaba en 404. Van como RewriteRule.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1) La URL con extension redirige a la limpia: una sola URL indexable.
+  RewriteCond %{REQUEST_METHOD} =GET
+  RewriteCond %{THE_REQUEST} "\s/+index\.html[\s?]" [NC]
+  RewriteRule ^ / [R=301,L,NE]
+
+  RewriteCond %{REQUEST_METHOD} =GET
+  RewriteCond %{THE_REQUEST} "\s/+([^/\s?]+?)\.(html|php)[\s?]" [NC]
+  RewriteRule ^ /%1 [R=301,L,NE]
+
+  # 2) La URL limpia sirve el fichero real sin que el navegador vea la extension.
+  #    ^([^/.]+)$ = solo raiz y sin puntos: data.json, robots.txt y assets no entran.
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([^/.]+)$ $1.html [L]
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^([^/.]+)$ $1.php [L]
+</IfModule>
