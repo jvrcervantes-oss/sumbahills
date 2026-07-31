@@ -8,6 +8,6 @@ Backups/
 Marketing/
 estado_trabajo.md
 
-# Visor de leads del estudio: lleva el hash bcrypt de su contrasena y el repo es PUBLICO.
-# Se sube a mano al servidor, nunca por deploy.
-leads-estudio.php
+# El hash del visor del estudio ya NO vive en el .php: se lee de private/estudio.hash,
+# que esta aqui arriba en este mismo fichero y lo devuelve 404 el .htaccess. Asi el
+# codigo se puede versionar y desplegar como todo lo demas, sin publicar nada.
