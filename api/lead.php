@@ -36,6 +36,13 @@ $whatsapp = isset($_POST['whatsapp']) ? trim($_POST['whatsapp']) : '';
 $source   = isset($_POST['source'])   ? trim($_POST['source'])   : '';
 $property = isset($_POST['property']) ? trim($_POST['property']) : '';
 
+// Trampa de bots: el campo `company` está oculto por CSS en el formulario, una persona
+// nunca lo rellena. Se responde ok para que el bot no reintente, pero no se guarda nada.
+if (trim($_POST['company'] ?? '') !== '') {
+    echo json_encode(['ok' => true]);
+    exit;
+}
+
 // Validación de email
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(422);
@@ -129,6 +136,35 @@ if (file_exists($mailCfgFile)) {
           . '<p style="font-size:13px;color:#666">Any questions? WhatsApp us at +62 811-3820-0932 or reply to this email.</p>'
           . '</div></body></html>';
     smtp_send($mailCfg, $email, $subject, $html);
+
+    // Aviso al buzón del proyecto SOLO para las consultas de la web (source sumbahills-web):
+    // esas traen nombre, WhatsApp e interés y hay que contestarlas a mano. El visor
+    // leads.php enseña únicamente los leads del QR (y su cálculo de comisión depende de
+    // ello), así que sin este correo una consulta de la web no llegaría a ninguna persona.
+    if ($source === 'sumbahills-web') {
+        $rows = [
+            'Email'    => $email,
+            'Name'     => $name !== '' ? $name : '—',
+            'WhatsApp' => $whatsapp !== '' ? $whatsapp : '—',
+            'Interest' => $property !== '' ? $property : '—',
+        ];
+        $lines = '';
+        foreach ($rows as $k => $v) {
+            $lines .= '<tr><td style="padding:6px 14px 6px 0;color:#666">' . $k . '</td>'
+                    . '<td style="padding:6px 0"><b>' . htmlspecialchars($v, ENT_QUOTES, 'UTF-8') . '</b></td></tr>';
+        }
+        $waLink = $whatsapp !== '' ? 'https://wa.me/' . preg_replace('/\D/', '', $whatsapp) : '';
+        $notify = '<!DOCTYPE html><html><body style="font-family:Arial,Helvetica,sans-serif;color:#2E3437">'
+                . '<h2 style="margin:0 0 12px">New enquiry from the website</h2>'
+                . '<table style="font-size:15px">' . $lines . '</table>'
+                . ($waLink ? '<p style="margin-top:18px"><a href="' . $waLink . '">Open WhatsApp</a></p>' : '')
+                . '<p style="margin-top:18px"><a href="mailto:' . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . '">Reply by email</a></p>'
+                . '</body></html>';
+        $inbox = $mailCfg['from_email'] ?? ($mailCfg['smtp_user'] ?? '');
+        if ($inbox !== '') {
+            smtp_send($mailCfg, $inbox, 'Sumba Hills · new website enquiry', $notify);
+        }
+    }
 }
 
 echo json_encode(['ok' => true]);
