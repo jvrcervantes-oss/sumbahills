@@ -49,7 +49,8 @@ function passHash() {
  *  la haría parecer prevista. */
 const FUENTES = [
     'sumba-hills-qr'       => 'QR impreso (equipo de calle)',
-    'sumbahills-brochure'  => 'Formulario de la landing',
+    'sumbahills-web'       => 'Consulta desde la web',
+    'sumbahills-brochure'  => 'Descarga del folleto (web anterior)',
 ];
 
 /** Filas de prueba. No se ocultan —desaparecer datos es peor— se marcan y se
