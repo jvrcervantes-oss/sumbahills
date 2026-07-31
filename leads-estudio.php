@@ -12,10 +12,14 @@
  * tener dentro, ni apagado, el código que enseña lo que no deben ver. El día que
  * un `if` se equivoque, el fallo es una fuga hacia un tercero.
  *
- * Se ve como AxisWorks (no como Sumba Hills) también a propósito: es del
- * estudio. Si se pareciera a la del cliente, cualquiera confundiría cuál es cuál.
+ * Va con la paleta de Sumba Hills (31-jul-2026, decisión del owner). Nació con
+ * la identidad de AxisWorks para que no se confundiera con la página del
+ * cliente, pero se mira alternándola con `/leads` y con `qr.html`, y saltar
+ * entre dos estilos cansa. Lo que la distingue es el título y el sello del pie,
+ * no el color.
  *
- * Contraseña: DISTINTA de la de `leads.php`. Hash bcrypt abajo. Para cambiarla:
+ * Contraseña: DISTINTA de la de `leads.php`, y su hash NO está en este fichero
+ * (ver el bloque de HASH_FILE, más abajo). Para generar una nueva:
  *   python -c "import bcrypt;print(bcrypt.hashpw(b'LA_NUEVA', bcrypt.gensalt(12)).decode())"
  *   y sustituir el `$2b$` inicial por `$2y$` (PHP no reconoce el prefijo `$2b$`).
  *
@@ -150,22 +154,25 @@ function nombreFuente($s) { return FUENTES[$s] ?? $s; }
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-/* Identidad AxisWorks — la misma del panel: Ink, Bone, Signal. Sin sombras,
-   un solo acento, radio corto. Es una herramienta interna, no una web. */
+/* Paleta de Sumba Hills: crema y tierra, la misma de `qr.html` y de la pagina
+   del equipo. Es una herramienta interna del estudio, pero mirando datos de
+   ESTE proyecto, y saltar de una a otra con dos estilos distintos cansa.
+   Lo que la distingue no es el color: es el titulo y el sello de abajo. */
 :root{
-  --ink:#15181C;--bone:#F4F2EC;--signal:#E2581C;
-  --bg:var(--ink);--surface:#1B1F24;--line:#2B3036;--tx:var(--bone);
-  --dim:#9AA0A8;--faint:#6E747B;
-  --sans:'Inter',ui-sans-serif,system-ui,sans-serif;
-  --disp:'Space Grotesk',var(--sans);
-  --mono:'JetBrains Mono',ui-monospace,monospace;
-  color-scheme:dark;
-}
-@media (prefers-color-scheme:light){
-  :root{--bg:var(--bone);--surface:#FBFAF5;--line:#E3DFD3;--tx:var(--ink);
-        --dim:#5C6167;--faint:#8A8F96;--signal:#C84A14;color-scheme:light}
+  --terra:#8B5E3C;      /* terracota/madera: el acento */
+  --terra-d:#6B4429;    /* hover */
+  --espresso:#3B2A22;   /* titulares */
+  --arena:#F5F0E6;      /* fondo */
+  --bg:var(--arena);--surface:#FFFFFF;--line:rgba(46,38,32,.16);
+  --tx:#2E2620;--dim:rgba(46,38,32,.72);--faint:rgba(46,38,32,.5);
+  --signal:var(--terra);
+  --sans:'Jost',ui-sans-serif,system-ui,sans-serif;
+  --disp:var(--sans);
+  --mono:var(--sans);   /* Sumba Hills no usa monoespaciada; los numeros se
+                           alinean con font-variant-numeric, no con la fuente */
+  color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--tx);font:15px/1.55 var(--sans);min-height:100vh;
@@ -174,18 +181,19 @@ a{color:inherit}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 main{max-width:1000px;margin:0 auto;padding:38px 22px 70px}
 main.narrow{max-width:430px;padding-top:12vh}
-.wm{font-family:var(--disp);font-weight:700;letter-spacing:.22em;font-size:12px;margin-bottom:30px}
+.wm{font-weight:600;letter-spacing:.2em;font-size:11.5px;color:var(--terra);margin-bottom:26px}
 .wm x{color:var(--signal);font-style:normal;padding:0 .05em}
-h1{font-family:var(--disp);font-weight:700;font-size:25px;letter-spacing:-.01em;line-height:1.2}
+h1{font-family:var(--disp);font-weight:500;font-size:clamp(26px,5vw,38px);color:var(--espresso);
+  line-height:1.1}
 .lede{color:var(--dim);margin-top:8px;max-width:64ch;font-size:14px}
 .bar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.logout{font-family:var(--mono);font-size:11px;color:var(--faint);text-decoration:none;
-  border:1px solid var(--line);border-radius:3px;padding:5px 9px}
+.logout{font-size:12.5px;color:var(--faint);text-decoration:none;
+  border:1px solid var(--line);border-radius:7px;padding:6px 11px}
 .logout:hover{color:var(--tx);border-color:var(--signal)}
 
 /* Fuentes: son el indice de la pagina, asi que van arriba y se pueden clicar */
 .fuentes{display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 6px}
-.f{display:block;text-decoration:none;border:1px solid var(--line);border-radius:4px;
+.f{display:block;text-decoration:none;border:1px solid var(--line);border-radius:11px;
   padding:9px 13px;min-width:150px;background:var(--surface)}
 .f:hover{border-color:var(--signal)}
 .f.on{border-color:var(--signal)}
@@ -193,7 +201,7 @@ h1{font-family:var(--disp);font-weight:700;font-size:25px;letter-spacing:-.01em;
 .f .l{display:block;font-size:12px;color:var(--dim);margin-top:1px}
 .f .s{display:block;font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.04em}
 
-.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin-top:22px;
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-top:22px;
   overflow:hidden}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;min-width:720px}
@@ -204,8 +212,8 @@ tr:last-child td{border-bottom:none}
 tbody tr:hover{background:color-mix(in srgb,var(--signal) 6%,transparent)}
 .when{font-family:var(--mono);font-size:11.5px;color:var(--faint);white-space:nowrap}
 .name{font-weight:500}
-.src{font-family:var(--mono);font-size:10.5px;color:var(--dim);border:1px solid var(--line);
-  border-radius:3px;padding:2px 6px;white-space:nowrap}
+.src{font-size:11.5px;color:var(--dim);border:1px solid var(--line);
+  border-radius:6px;padding:2px 8px;white-space:nowrap}
 td a{text-decoration:none;border-bottom:1px solid transparent}
 td a:hover{border-bottom-color:var(--signal)}
 tr.prueba{opacity:.5}
@@ -221,11 +229,12 @@ code{font-family:var(--mono);font-size:.86em;color:var(--dim)}
 form{display:flex;flex-direction:column;gap:13px;margin-top:24px}
 label{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--faint);display:block;margin-bottom:7px}
-input{font:16px var(--sans);padding:12px 14px;border:1px solid var(--line);border-radius:5px;
+input{font:16px var(--sans);padding:14px 16px;border:1px solid var(--line);border-radius:9px;
   background:var(--bg);color:var(--tx);width:100%}
 input:focus{border-color:var(--signal)}
-button[type=submit]{background:var(--signal);color:#fff;border:0;border-radius:5px;padding:13px;
-  font:600 14px var(--sans);cursor:pointer}
+button[type=submit]{background:var(--terra);color:var(--arena);border:0;border-radius:9px;
+  padding:15px;font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+button[type=submit]:hover{background:var(--terra-d)}
 .err{font-size:12.5px;color:var(--signal);margin-top:7px}
 footer{max-width:1000px;margin:34px auto 0;padding:18px 22px 40px;border-top:1px solid var(--line);
   font-size:12px;color:var(--faint)}
