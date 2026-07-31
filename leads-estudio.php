@@ -43,9 +43,27 @@ header('Referrer-Policy: no-referrer');
 const HASH_FILE = __DIR__ . '/private/estudio.hash';
 const CSV_FILE  = __DIR__ . '/private/leads.csv';
 
+/**
+ * Devuelve el hash guardado, o '' si no hay fichero.
+ *
+ * Limpia lo que un editor de servidor suele colar sin avisar: el BOM de UTF-8
+ * (tres bytes invisibles al principio — `trim()` NO los quita, y con ellos
+ * `password_verify` falla siempre), comillas de un copiado descuidado y saltos
+ * de línea de Windows. Sin esto, un fichero "que se ve bien" rechaza la
+ * contraseña correcta y no hay forma de saber por qué.
+ */
 function passHash() {
     if (!is_readable(HASH_FILE)) return '';
-    return trim(file_get_contents(HASH_FILE));
+    $h = (string)file_get_contents(HASH_FILE);
+    $h = preg_replace('/^\xEF\xBB\xBF/', '', $h);   // BOM
+    return trim($h, " \t\n\r\0\x0B\"'");
+}
+
+/** ¿Es un hash bcrypt de verdad? Si no lo es, el problema es el FICHERO, no la
+ *  contraseña que teclea la persona — y hay que poder decirlo, porque
+ *  `password_verify` devuelve false igual en los dos casos. */
+function hashValido($h) {
+    return (bool)preg_match('#^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$#', $h);
 }
 
 /** Fuentes conocidas -> cómo se llaman en cristiano. Lo que no esté aquí se
@@ -254,6 +272,17 @@ footer{max-width:1000px;margin:34px auto 0;padding:18px 22px 40px;border-top:1px
       servidor, así que esta página no deja entrar a nadie. Créalo con el hash bcrypt de
       la contraseña — está en <code>private/sumbahills_accesos.env</code> del repo de la
       agencia.</p>
+  <?php elseif (!hashValido($hash)): ?>
+    <?php /* El diagnostico que faltaba: fichero corrupto y contrasena mal tecleada
+              daban el MISMO "contrasena incorrecta", asi que no habia forma de saber
+              cual de los dos era. Esta pagina es del estudio, aqui si se detalla. */ ?>
+    <p class="err" style="margin:22px 0 0"><b>El fichero <code>private/estudio.hash</code>
+      existe pero no contiene un hash bcrypt válido</b>, así que ninguna contraseña va a
+      funcionar. Tiene <?= strlen($hash) ?> caracteres y debería tener 60, empezando por
+      <code>$2y$</code>. Suele pasar por pegarlo partido en dos líneas, por comillas
+      alrededor, o porque el editor guardó el archivo con codificación
+      <code>UTF-8 con BOM</code>. Vuelve a pegarlo en una sola línea y guarda como
+      <code>UTF-8 sin BOM</code>.</p>
   <?php else: ?>
   <form method="post" autocomplete="off">
     <div>

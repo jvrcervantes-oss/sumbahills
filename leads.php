@@ -39,9 +39,20 @@ header('Cache-Control: no-store');
 const HASH_FILE = __DIR__ . '/private/leads.hash';
 const CSV_FILE  = __DIR__ . '/private/leads.csv';
 
+/**
+ * Limpia lo que un editor de servidor cuela sin avisar: el BOM de UTF-8 (tres
+ * bytes invisibles que `trim()` NO quita, y con ellos `password_verify` falla
+ * siempre), comillas de un copiado descuidado y saltos de línea de Windows.
+ */
 function passHash() {
     if (!is_readable(HASH_FILE)) return '';
-    return trim(file_get_contents(HASH_FILE));
+    $h = (string)file_get_contents(HASH_FILE);
+    $h = preg_replace('/^\xEF\xBB\xBF/', '', $h);
+    $h = trim($h, " \t\n\r\0\x0B\"'");
+    // Un hash mal pegado se comporta igual que una contraseña equivocada. Aquí
+    // se descarta: mejor "no se puede entrar" que "tu contraseña es incorrecta"
+    // dicho a alguien que la está escribiendo bien.
+    return preg_match('#^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$#', $h) ? $h : '';
 }
 const QR_SOURCE = 'sumba-hills-qr';   // el valor que manda qr.html
 
