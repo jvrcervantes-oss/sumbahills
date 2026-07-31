@@ -7,3 +7,7 @@ Backups/
 # Trabajo de campana: presupuesto, angulos y datos de cuenta. El repo es PUBLICO.
 Marketing/
 estado_trabajo.md
+
+# Visor de leads del estudio: lleva el hash bcrypt de su contrasena y el repo es PUBLICO.
+# Se sube a mano al servidor, nunca por deploy.
+leads-estudio.php
