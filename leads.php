@@ -210,14 +210,26 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
 <main class="narrow">
   <h1>QR leads</h1>
   <p class="by-line">Sumba Hills · by Lawang Properties</p>
-  <p class="lede">Private page. Enter the password to see the leads captured through the QR code.</p>
+  <?php /* La entradilla cambia con el estado. Con la primera version de esto la
+            pagina decia "enter the password" y debajo "temporarily unavailable",
+            sin ningun campo donde escribir: quien la abriera se quedaba buscando
+            un formulario que no existe. Un mensaje de fallo que contradice al de
+            al lado es peor que no ponerlo. */ ?>
+  <?php if ($hash === ''): ?>
+    <p class="lede">Sign-in is paused while we finish a security change.</p>
+  <?php else: ?>
+    <p class="lede">Private page. Enter the password to see the leads captured through the QR code.</p>
+  <?php endif; ?>
 
   <div class="card">
     <?php if ($hash === ''): ?>
       <?php /* Falla cerrada. El mensaje no dice como arreglarlo: esta pagina la
                 abre el equipo de calle, y unas instrucciones de servidor solo
-                servirian para desconcertarles. Quien tiene que actuar ya lo sabe. */ ?>
-      <p class="empty" style="padding:22px 4px">This page is temporarily unavailable.<br>
+                servirian para desconcertarles. Quien tiene que actuar ya lo sabe.
+                Y se dice que las sesiones abiertas siguen valiendo, que es la
+                diferencia entre "esto esta roto" y "no puedo volver a entrar". */ ?>
+      <p class="empty" style="padding:22px 4px">Sign-in is temporarily unavailable.<br>
+        If you are already signed in on this device you can keep using the page.<br>
         Please contact Lawang Properties.</p>
     <?php else: ?>
     <form method="post" autocomplete="off">
