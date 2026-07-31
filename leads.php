@@ -11,16 +11,38 @@
  * SELECT), así que la réplica no es consultable sin una clave de servicio — y el CSV
  * local ya es la fuente de verdad.
  *
- * Contraseña: hash bcrypt abajo. Para cambiarla, sustituir la constante por el
- * resultado de  php -r "echo password_hash('LA_NUEVA', PASSWORD_BCRYPT);"
+ * Contraseña (31-jul-2026): el hash YA NO vive aquí. Este repo es PÚBLICO
+ * —github.com/jvrcervantes-oss/sumbahills, comprobado sin autenticar— así que
+ * el hash se descargaba desde raw.githubusercontent y se podía atacar offline,
+ * sin límite de intentos y sin dejar rastro en el servidor. Y esto protege PII
+ * de gente real: nombre, WhatsApp y email.
+ *
+ * Ahora se lee de `private/leads.hash`, que el .gitignore no sube y el
+ * .htaccess de la raíz devuelve 404. Sin ese fichero no entra NADIE: la página
+ * falla cerrada. Mismo patrón que `leads-estudio.php` y que
+ * `contracts/private/mail.php` en Lawang.
+ *
+ * ⚠️ Mover el hash NO desexpone el viejo: sigue en el historial de git, que es
+ * público y no se puede borrar del todo. Cerrar esto de verdad exige ROTAR la
+ * contraseña — es decir, poner en `private/leads.hash` el hash de una nueva y
+ * dársela al equipo. Mientras el fichero lleve el hash antiguo, esta página
+ * está protegida por una contraseña cuyo hash es de dominio público.
+ *
+ * Para generar el hash de una contraseña nueva:
+ *   php -r "echo password_hash('LA_NUEVA', PASSWORD_BCRYPT);"
  */
 
 session_start();
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 
-const PASS_HASH = '$2y$12$dKhplk1rUKhDHs/sLfk5wuFvj9L/Kxc8yOcpmtxtITecgfMcQJlt6';
+const HASH_FILE = __DIR__ . '/private/leads.hash';
 const CSV_FILE  = __DIR__ . '/private/leads.csv';
+
+function passHash() {
+    if (!is_readable(HASH_FILE)) return '';
+    return trim(file_get_contents(HASH_FILE));
+}
 const QR_SOURCE = 'sumba-hills-qr';   // el valor que manda qr.html
 
 // Condiciones del equipo que trabaja el QR (IDR). Un solo sitio donde tocarlas.
@@ -34,9 +56,12 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
+$hash  = passHash();
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (password_verify($_POST['password'] ?? '', PASS_HASH)) {
+    // Sin hash no se compara nada: password_verify('', '') ya devuelve false,
+    // pero una puerta no se cierra confiando en un caso límite.
+    if ($hash !== '' && password_verify($_POST['password'] ?? '', $hash)) {
         session_regenerate_id(true);
         $_SESSION['sh_leads_auth'] = true;
         header('Location: leads.php');   // POST/Redirect/GET: recargar no reenvía la clave
@@ -188,6 +213,13 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
   <p class="lede">Private page. Enter the password to see the leads captured through the QR code.</p>
 
   <div class="card">
+    <?php if ($hash === ''): ?>
+      <?php /* Falla cerrada. El mensaje no dice como arreglarlo: esta pagina la
+                abre el equipo de calle, y unas instrucciones de servidor solo
+                servirian para desconcertarles. Quien tiene que actuar ya lo sabe. */ ?>
+      <p class="empty" style="padding:22px 4px">This page is temporarily unavailable.<br>
+        Please contact Lawang Properties.</p>
+    <?php else: ?>
     <form method="post" autocomplete="off">
       <div>
         <label for="password">Password</label>
@@ -196,6 +228,7 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
       </div>
       <button type="submit">Enter</button>
     </form>
+    <?php endif; ?>
   </div>
 </main>
 
