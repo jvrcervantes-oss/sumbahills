@@ -242,7 +242,7 @@ footer{max-width:1000px;margin:34px auto 0;padding:18px 22px 40px;border-top:1px
   <?php if ($hash === ''): ?>
     <p class="err" style="margin:22px 0 0">Falta <code>private/estudio.hash</code> en el
       servidor, así que esta página no deja entrar a nadie. Créalo con el hash bcrypt de
-      la contraseña — está en <code>private/visor_sumbahills.env</code> del repo de la
+      la contraseña — está en <code>private/sumbahills_accesos.env</code> del repo de la
       agencia.</p>
   <?php else: ?>
   <form method="post" autocomplete="off">
