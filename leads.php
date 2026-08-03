@@ -112,6 +112,23 @@ if ($auth) {
     }
 }
 
+// Agrupado por mes: el pago del equipo es mensual (salario fijo + variable por lead),
+// así que una lista corrida no se puede cuadrar con lo que se le paga en el mes.
+// Clave 'Y-m' para que el orden sea el de la lista (más reciente arriba) sin reordenar.
+$porMes = [];
+foreach ($rows as $r) {
+    $t = strtotime($r['ts']);
+    // Un timestamp ilegible NO se cuela en el mes de al lado: va a su propio grupo.
+    $porMes[$t ? date('Y-m', $t) : '?'][] = $r;
+}
+// El grupo sin fecha va al final: hereda el sitio de su fila en el CSV, y si esa es la
+// última leída aparece ARRIBA del todo, por delante del mes en curso.
+if (isset($porMes['?'])) {
+    $sinFecha = $porMes['?'];
+    unset($porMes['?']);
+    $porMes['?'] = $sinFecha;
+}
+
 /**
  * api/lead.php antepone una comilla simple a los valores que empiezan por = + - @
  * (anti inyección de fórmula en Excel). Todos los WhatsApp con prefijo internacional
@@ -130,6 +147,12 @@ function idr($n) { return 'IDR ' . number_format((float)$n, 0, ',', '.'); }
 function fecha($iso) {
     $t = strtotime($iso);
     return $t ? date('d M Y · H:i', $t) : $iso;
+}
+
+/** '2026-07' → 'July 2026' */
+function mes($k) {
+    $t = strtotime($k . '-01');
+    return $t ? date('F Y', $t) : 'Unknown date';
 }
 ?>
 <!DOCTYPE html>
@@ -187,8 +210,16 @@ button[type="submit"]:active{transform:scale(.99)}
 table{border-collapse:collapse;width:100%;min-width:640px}
 th{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(46,52,55,.6);text-align:left;padding:16px 20px;background:var(--rl);border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:16px 20px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tbody tr:hover{background:rgba(139,94,60,.045)}
+tbody:last-child tr:last-child td{border-bottom:none}
+tbody tr:not(.mo):hover{background:rgba(139,94,60,.045)}
+/* Separador de mes: una fila de cabecera dentro de la tabla, un <tbody> por mes */
+/* El flex va en un div interior, no en el <th>: un table-cell con display:flex deja
+   de serlo y el navegador lo mete en una celda anónima que ya no ocupa la fila. */
+.mo th{background:rgba(139,94,60,.07);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:11px 20px;color:var(--dl)}
+.mo th>div{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+tbody:first-of-type .mo th{border-top:none}
+.mo-name{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.mo-meta{font-size:12px;letter-spacing:.04em;text-transform:none;color:rgba(46,52,55,.6);font-weight:500;font-variant-numeric:tabular-nums}
 .when{color:rgba(46,52,55,.6);font-size:13px;white-space:nowrap}
 .name{font-weight:500;color:var(--dl)}
 td a{text-decoration:none;border-bottom:1px solid transparent}
@@ -282,8 +313,15 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
         <thead>
           <tr><th>When</th><th>Name</th><th>WhatsApp</th><th>Email</th></tr>
         </thead>
+        <?php foreach ($porMes as $k => $leads): ?>
         <tbody>
-        <?php foreach ($rows as $r):
+          <tr class="mo">
+            <th colspan="4" scope="colgroup"><div>
+              <span class="mo-name"><?= e(mes($k)) ?></span>
+              <span class="mo-meta"><?= count($leads) ?> lead<?= count($leads) === 1 ? '' : 's' ?> · <?= idr(count($leads) * PAY_PER_LEAD) ?></span>
+            </div></th>
+          </tr>
+        <?php foreach ($leads as $r):
             $digits = preg_replace('/\D/', '', $r['whatsapp']); ?>
           <tr>
             <td class="when"><?= e(fecha($r['ts'])) ?></td>
@@ -300,6 +338,7 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
           </tr>
         <?php endforeach; ?>
         </tbody>
+        <?php endforeach; ?>
       </table>
     </div>
     <?php endif; ?>
@@ -320,7 +359,7 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
       <span class="val"><?= idr(count($rows) * PAY_PER_LEAD) ?></span>
     </div>
     <?php endif; ?>
-    <p class="foot">All-time total, not this month. It leaves out the fixed salary and the closed-lead bonus: this panel tracks neither months worked nor which leads closed.</p>
+    <p class="foot">All-time total. For a single month, use the figure on that month's heading in the table above. Both leave out the fixed salary and the closed-lead bonus: this panel tracks neither months worked nor which leads closed.</p>
   </section>
 </main>
 <?php endif; ?>
