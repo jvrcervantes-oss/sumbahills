@@ -87,7 +87,7 @@ footer{border-top:1px solid var(--line);max-width:560px;margin:40px auto 0;paddi
       </div>
       <div class="field">
         <label for="whatsapp">WhatsApp number (with country code) <span class="req">*</span></label>
-        <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+62 812 3456 7890" required>
+        <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="e.g. +62 812 3456 7890" required>
         <div class="err" data-err="whatsapp"></div>
       </div>
       <div class="field">
@@ -120,7 +120,7 @@ footer{border-top:1px solid var(--line);max-width:560px;margin:40px auto 0;paddi
 <script>
 (function(){
   function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
-  function validWhatsapp(v){ return /^\+?\d{7,15}$/.test(v.replace(/[\s()-]/g,'')); }
+  function validWhatsapp(v){ return /^\+\d{7,15}$/.test(v.replace(/[\s()-]/g,'')); }
 
   var modal = document.getElementById('successModal');
   function openModal(){
@@ -144,7 +144,7 @@ footer{border-top:1px solid var(--line);max-width:560px;margin:40px auto 0;paddi
 
     var ok = true;
     if (!name){ setErr(form, 'name', 'Enter your name.'); ok = false; }
-    if (!validWhatsapp(whatsapp)){ setErr(form, 'whatsapp', 'Enter a valid WhatsApp number.'); ok = false; }
+    if (!validWhatsapp(whatsapp)){ setErr(form, 'whatsapp', 'Include the country code, starting with +.'); ok = false; }
     if (!validEmail(email)){ setErr(form, 'email', 'Enter a valid email.'); ok = false; }
     if (!ok) return;
 

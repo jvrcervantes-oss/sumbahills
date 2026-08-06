@@ -50,6 +50,14 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+// El frontend ya exige el "+" de país, pero el endpoint es público: se repite aquí
+// para que un POST directo no cuele un número sin prefijo.
+if (!preg_match('/^\+\d{7,15}$/', preg_replace('/[\s()-]/', '', $whatsapp))) {
+    http_response_code(422);
+    echo json_encode(['ok' => false, 'error' => 'whatsapp']);
+    exit;
+}
+
 // Recorta campos para evitar payloads enormes (no toca el contenido)
 $clean = function ($s) {
     $s = preg_replace('/[\r\n]+/', ' ', $s);
