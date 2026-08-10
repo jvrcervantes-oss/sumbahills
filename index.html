@@ -34,7 +34,7 @@
     {
       "@type": "Product",
       "name": "Bungalow · 1 bedroom villa",
-      "description": "Beachfront bungalow in the Lower Zone: one bedroom, one bathroom, open kitchen, outdoor area and private pool. Land included.",
+      "description": "Beachfront bungalow: one bedroom, one bathroom, open kitchen, outdoor area and private pool. Land included.",
       "brand": { "@id": "https://sumbahills.lawangproperties.com/#org" },
       "image": "https://sumbahills.lawangproperties.com/assets/bungalow-ext.webp",
       "offers": { "@type": "Offer", "priceCurrency": "EUR", "price": "69000", "availability": "https://schema.org/PreOrder", "url": "https://sumbahills.lawangproperties.com/#residences" }
@@ -42,7 +42,7 @@
     {
       "@type": "Product",
       "name": "Dune · 1 bedroom villa",
-      "description": "One bedroom villa in the Middle Zone: en-suite bathroom, open kitchen, living room, outdoor area and private pool. Land not included.",
+      "description": "One bedroom villa: en-suite bathroom, open kitchen, living room, outdoor area and private pool. Land not included.",
       "brand": { "@id": "https://sumbahills.lawangproperties.com/#org" },
       "image": "https://sumbahills.lawangproperties.com/assets/dune-ext.webp",
       "offers": { "@type": "Offer", "priceCurrency": "EUR", "price": "69000", "availability": "https://schema.org/PreOrder", "url": "https://sumbahills.lawangproperties.com/#residences" }
@@ -50,7 +50,7 @@
     {
       "@type": "Product",
       "name": "Dream · 2 bedroom villa",
-      "description": "Two bedroom villa in the Upper Zone: two en-suite bathrooms, open kitchen, living room and private pool. Building area 76 m², pool terrace 45 m². Land not included.",
+      "description": "Two bedroom villa: two en-suite bathrooms, open kitchen, living room and private pool. Building area 76 m², pool terrace 45 m². Land not included.",
       "brand": { "@id": "https://sumbahills.lawangproperties.com/#org" },
       "image": "https://sumbahills.lawangproperties.com/assets/dream-ext.webp",
       "offers": { "@type": "Offer", "priceCurrency": "EUR", "price": "89000", "availability": "https://schema.org/PreOrder", "url": "https://sumbahills.lawangproperties.com/#residences" }
@@ -71,17 +71,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Paleta sustituida (10-ago-2026, tarde) por el sistema visual del import
-     de Claude Design ("Sumbahill landing page design", .dc.html): verde
-     #2E3D31/#2B3A26, crema #EFE7D8, arena #E2D2B6, marrón #9C7A4E. Esto
-     REVIERTE a propósito la corrección de esta misma mañana que había
-     quitado el verde por confundirse con el de Lawang — aquí el verde
-     viene del propio sistema aprobado para esta pieza, no es el error de
-     antes. Contenido (fotos, contacto, precios) sigue siendo el real del
-     cliente: el import solo aporta paleta/tipografía/composición, nunca se
-     copian sus datos (ver contexto/proyecto_sumbahills.md). Jost se
-     mantiene, Cormorant Garamond del import NO se adopta: decisión ya
-     tomada por el cliente el 15-jul, ajena al color. */
+  /* Paleta + COMPOSICION del import de Claude Design ("Sumbahill landing
+     page design", .dc.html) del 10-ago-2026, tarde. Primer intento (mismo
+     dia) solo cambio color sobre la pagina larga que ya existia — el
+     usuario lo rechazo con razon ("no se parece en nada a lo que te he
+     pasado"): el import es una pagina CORTA (hero > gancho de precio > isla
+     > cards de vivienda > masterplan > contacto) y ese intento conservo las
+     12 secciones de la reconstruccion de esta misma manana. Esta version
+     SI calca la composicion real: mismo orden de bloques, misma densidad,
+     mayoria de secciones claras con un unico bloque oscuro ("Choose your
+     dream"), como en el archivo original. Contenido (fotos, contacto,
+     precios) sigue siendo el real del cliente — el import nunca aporta
+     datos, solo paleta/tipografia/composicion (contexto/proyecto_sumbahills.md).
+     Verde #2E3D31/#2B3A26, crema #EFE7D8, arena #E2D2B6, marron #9C7A4E.
+     Jost se mantiene, Cormorant Garamond del import NO se adopta (decision
+     del cliente, 15-jul, ajena al color). */
   --ink:#2b3a26;
   --ink-2:#2b3a26;
   --ink-dark:#1f2a1b;
@@ -96,52 +100,58 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--paper);font-family:'Jost',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--sand);color:var(--espresso);font-family:'Jost',system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%;height:auto}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 [hidden]{display:none !important}
 
 /* ── tipografia ─────────────────────────────────────────────── */
-.eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:400}
+/* Por defecto el cuerpo de la pagina es CLARO (la mayoria de secciones del
+   import lo son); .dark es la excepcion puntual (hero, Choose your dream,
+   footer), justo al reves del esquema de esta manana donde lo oscuro era
+   la norma. */
+.eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--accent);font-weight:400}
 h1,h2,h3{font-weight:400;line-height:1.04;letter-spacing:.004em;text-wrap:balance}
 h1{font-size:clamp(40px,7vw,92px);font-weight:500}
 h2{font-size:clamp(30px,4.4vw,58px)}
 h3{font-size:clamp(22px,2.4vw,30px)}
-.lede{font-family:'Jost',sans-serif;font-style:italic;font-weight:300;font-size:clamp(19px,2.3vw,26px);color:rgba(246,245,240,.9);text-wrap:pretty}
-p{font-size:15.5px;line-height:1.78;color:rgba(246,245,240,.8);text-wrap:pretty;max-width:62ch}
-.mut{color:rgba(246,245,240,.55)}
+.lede{font-family:'Jost',sans-serif;font-style:italic;font-weight:300;font-size:clamp(19px,2.3vw,26px);color:rgba(46,61,49,.9);text-wrap:pretty}
+p{font-size:15.5px;line-height:1.78;color:rgba(46,61,49,.78);text-wrap:pretty;max-width:62ch}
+.mut{color:rgba(46,61,49,.55)}
 .small{font-size:12.5px;line-height:1.7;letter-spacing:.02em}
+
+/* ── secciones oscuras (hero, choose-your-dream, footer) ───────── */
+.dark{background:var(--ink);color:var(--paper)}
+.dark .eyebrow{color:var(--gold)}
+.dark .lede{color:rgba(251,248,242,.9)}
+.dark p{color:rgba(251,248,242,.8)}
+.dark .mut{color:rgba(251,248,242,.55)}
 
 /* ── layout ─────────────────────────────────────────────────── */
 section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 .wrap{max-width:1280px;margin:0 auto}
 .head{max-width:66ch;margin-bottom:clamp(40px,5vw,64px)}
+.head.center{margin-left:auto;margin-right:auto;text-align:center}
 .head .eyebrow{display:block;margin-bottom:18px}
 .head h2+p{margin-top:24px}
 .grid{display:grid;gap:clamp(18px,2.4vw,34px)}
-.light{background:var(--sand);color:var(--espresso)}
-.light p{color:rgba(46,61,49,.78)}
-.light .eyebrow{color:var(--accent)}
-.light .mut{color:rgba(46,61,49,.55)}
-.rule{height:1px;background:var(--line);border:0}
+.rule{height:1px;background:var(--line-dark);border:0}
 
 /* ── botones ────────────────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 26px;border:1px solid var(--gold);background:var(--gold);color:var(--ink);cursor:pointer;transition:background .25s ease,color .25s ease,border-color .25s ease,transform .16s cubic-bezier(.23,1,.32,1),box-shadow .25s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 26px;border:1px solid var(--espresso);background:var(--espresso);color:var(--sand);cursor:pointer;transition:background .25s ease,color .25s ease,border-color .25s ease,transform .16s cubic-bezier(.23,1,.32,1),box-shadow .25s ease}
 .btn::after{content:"→";display:inline-block;transition:transform .25s cubic-bezier(.23,1,.32,1)}
-.btn:hover{background:var(--paper);border-color:var(--paper);color:var(--ink)}
-.btn-ghost{background:transparent;color:var(--gold)}
-.btn-ghost:hover{background:var(--gold);color:var(--ink)}
-/* .btn en fondo por defecto (terracota) usa relleno crema — al revés en
-   secciones .light (fondo ya crema), o el botón desaparece contra su propio
-   fondo. Único caso real en esta página: el CTA de WhatsApp en "Visits". */
-.light .btn{background:var(--espresso);border-color:var(--espresso);color:var(--sand)}
-.light .btn-ghost{background:transparent;color:var(--espresso)}
+.btn:hover{background:var(--paper);border-color:var(--espresso);color:var(--espresso)}
+.btn-ghost{background:transparent;color:var(--espresso)}
+.btn-ghost:hover{background:var(--espresso);color:var(--sand)}
+/* Sobre fondo oscuro (hero, choose-your-dream, footer) el boton se invierte:
+   relleno crema/arena, o desaparece contra su propio fondo. */
+.dark .btn{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.dark .btn-ghost{background:transparent;color:var(--gold)}
 @media (hover:hover) and (pointer:fine){
-  .light .btn:hover,.light .btn-ghost:hover{background:var(--paper);border-color:var(--espresso);color:var(--espresso)}
-}
-@media (hover:hover) and (pointer:fine){
-  .btn:hover,.btn-ghost:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(246,245,240,.4)}
+  .dark .btn:hover,.dark .btn-ghost:hover{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+  .btn:hover,.btn-ghost:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(46,61,49,.25)}
+  .dark .btn:hover,.dark .btn-ghost:hover{box-shadow:0 8px 16px -8px rgba(251,248,242,.3)}
   .btn:hover::after{transform:translateX(4px)}
 }
 .btn:active{transform:scale(.97);transition-duration:.1s}
@@ -157,14 +167,10 @@ section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 .nav a:not(.btn){position:relative}
 .nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.23,1,.32,1)}
 .nav a:not(.btn):hover::after{transform:scaleX(1)}
-.nav .btn{padding:11px 18px}
+.nav .btn{padding:11px 18px;background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .nav .btn::after{content:none}
 
 /* ── menú móvil ─────────────────────────────────────────────── */
-/* Antes, por debajo de 1000px los enlaces simplemente desaparecían (solo
-   quedaba el logo y el CTA) — sin forma de llegar a Masterplan, Residences,
-   Ownership o Process desde el menú. Ahora entran en un panel a pantalla
-   completa que abre el botón de hamburguesa. */
 .menu-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;padding:0;border:0;background:none;cursor:pointer;position:relative;z-index:2}
 .menu-toggle span{display:block;width:100%;height:1px;background:var(--paper);transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .3s ease}
 .menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
@@ -191,96 +197,62 @@ section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 @keyframes kb{from{transform:scale(1.06)}to{transform:scale(1.18) translate3d(-1.4%,-1.8%,0)}}
 
 /* ── estadisticas del hero ──────────────────────────────────── */
-/* Reemplaza las insignias circulares que solapaban el hero: el import de
-   Claude Design trae las cifras DENTRO del hero, como una fila de tiles
-   translucidos sobre la foto, no como bisagra con la siguiente seccion.
-   Mismos datos reales de siempre (90+ parcelas, 180°, precios desde). */
 .hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;width:100%;background:var(--line);border:1px solid var(--line);margin-top:clamp(28px,4vw,44px)}
 .hero-stats div{padding:18px 14px;background:rgba(15,20,14,.4);backdrop-filter:blur(3px)}
 .hero-stats b{display:block;font-size:clamp(24px,2.6vw,32px);font-weight:400;line-height:1;color:var(--gold)}
 .hero-stats span{display:block;margin-top:8px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(251,248,242,.78)}
 
-/* ── mosaico de la isla ─────────────────────────────────────── */
-.mosaic{grid-template-columns:repeat(4,1fr)}
-.mosaic figure{position:relative;overflow:hidden;background:var(--ink-2);border-radius:14px}
-.mosaic img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
-.mosaic figure:hover img{transform:scale(1.04)}
-.mosaic figcaption{position:absolute;left:16px;bottom:14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 12px rgba(0,0,0,.7)}
-.mosaic .tall{grid-row:span 2}
-.mosaic .tall img{aspect-ratio:3/4;height:100%}
-@media (max-width:820px){.mosaic{grid-template-columns:repeat(2,1fr)}.mosaic .tall{grid-row:span 1}.mosaic .tall img{aspect-ratio:4/3}}
+/* ── gancho de precio (2ª seccion, calco del import) ───────────── */
+.hook-img{width:100%;max-width:900px;margin:clamp(32px,5vw,48px) auto 0;border:1px solid var(--line-dark)}
+
+/* ── isla: texto + grid de 3 fotos (calco del import) ──────────── */
+.island-grid{grid-template-columns:1fr 1fr}
+.island-grid img{width:100%;object-fit:cover;display:block}
+.island-grid .full{grid-column:1/-1;aspect-ratio:16/9}
+.island-grid img:not(.full){aspect-ratio:4/5}
+@media (max-width:640px){.island-grid{grid-template-columns:1fr}.island-grid img:not(.full){aspect-ratio:4/3}}
 
 /* ── dos columnas ───────────────────────────────────────────── */
 .two{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(28px,4vw,70px);align-items:center}
-.two img{border-radius:14px}
 @media (max-width:900px){.two{grid-template-columns:1fr}}
 
-/* ── masterplan ─────────────────────────────────────────────── */
-.plan-wrap{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);gap:clamp(28px,4vw,64px);align-items:start}
-.plan-wrap>img{border:1px solid var(--line);width:100%;border-radius:14px}
-.zones{list-style:none}
-.zones li{display:grid;grid-template-columns:auto 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
-.zones li:last-child{border-bottom:1px solid var(--line)}
-.zones .dot{width:9px;height:9px;border-radius:50%;margin-top:9px;background:var(--gold)}
-.zones h3{font-size:19px;letter-spacing:.02em}
-.zones p{font-size:14.5px;margin-top:7px;max-width:52ch}
-.zones .tag{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px}
-@media (max-width:900px){.plan-wrap{grid-template-columns:1fr}}
+/* ── masterplan: dos fotos con leyenda (calco del import) ──────── */
+.plan2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.plan2 img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+.plan2 figcaption{margin-top:12px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
 
-/* ── fichas de vivienda ─────────────────────────────────────── */
-/* Card vertical (imagen arriba, info abajo), anatomia del import de Claude
-   Design del 10-ago: sustituye a las fichas alternas con carrusel de
-   miniaturas de la reconstruccion de esta misma mañana. Una imagen por
-   unidad basta a esta densidad de card — sin galeria. */
+/* ── fichas de vivienda: card vertical sobre fondo oscuro ───────── */
+/* Anatomia del import: card translucida sobre "Choose your dream" (unica
+   seccion oscura fuera del hero/footer). Una imagen por unidad, sin galeria. */
 .villas{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.unit{display:flex;flex-direction:column;border:1px solid var(--line-dark)}
+.unit{display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid var(--line)}
 .unit-media{aspect-ratio:4/3;overflow:hidden}
 .unit-media img{width:100%;height:100%;object-fit:cover;display:block}
 .unit-info{display:flex;flex-direction:column;flex:1;gap:10px;padding:24px 22px 22px}
-.unit-info h3{font-size:25px}
-.unit-info p{font-size:13.5px;line-height:1.7}
-.unit-info .zone{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.unit-info h3{font-size:25px;color:var(--paper)}
+.unit-info p{font-size:13.5px;line-height:1.7;color:rgba(251,248,242,.76)}
+.unit-info .zone{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
 .specs{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px;margin-top:2px}
-.specs li{font-size:12.5px;letter-spacing:.01em;color:rgba(46,61,49,.75);padding-left:14px;position:relative}
-.specs li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:1px;background:var(--accent)}
-.price{border-top:1px solid var(--line-dark);padding-top:16px;margin-top:auto;display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.price b{font-size:clamp(20px,2vw,25px);font-weight:400;color:var(--espresso)}
-.price span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(46,61,49,.55)}
-
-/* ── listas de columnas ─────────────────────────────────────── */
-.cols{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-.card{border:1px solid var(--line);padding:clamp(24px,2.6vw,34px);transition:transform .3s cubic-bezier(.23,1,.32,1),border-color .3s ease}
-@media (hover:hover) and (pointer:fine){
-  .card:hover{transform:translateY(-5px);border-color:var(--gold)}
-  .light .card:hover{border-color:var(--espresso)}
-}
-.light .card{border-color:var(--line-dark)}
-.card h3{font-size:20px;margin-bottom:12px}
-.card .num{font-size:11px;letter-spacing:.24em;color:var(--gold);display:block;margin-bottom:16px}
-.light .card .num{color:var(--accent)}
-.card p{font-size:14.5px}
-.tick{list-style:none;columns:2;column-gap:34px}
-.tick li{font-size:14.5px;line-height:1.9;padding-left:18px;position:relative;break-inside:avoid;color:rgba(246,245,240,.82)}
-.tick li::before{content:"";position:absolute;left:0;top:14px;width:8px;height:1px;background:var(--gold)}
-.light .tick li{color:rgba(46,61,49,.82)}
-.light .tick li::before{background:var(--accent)}
-@media (max-width:680px){.tick{columns:1}}
+.specs li{font-size:12.5px;letter-spacing:.01em;color:rgba(251,248,242,.78);padding-left:14px;position:relative}
+.specs li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:1px;background:var(--gold)}
+.price{border-top:1px solid var(--line);padding-top:16px;margin-top:auto;display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.price b{font-size:clamp(20px,2vw,25px);font-weight:400;color:var(--gold)}
+.price span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,248,242,.55)}
 
 /* ── formulario ─────────────────────────────────────────────── */
+/* Underline minimo, calco del import: sin caja rellena, solo el trazo
+   inferior — la seccion de contacto ahora es clara, no oscura. */
 .form{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:640px;margin-top:32px}
 .form .full{grid-column:1/-1}
-.field label{display:block;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(246,245,240,.6);margin-bottom:9px}
-.field input,.field select{width:100%;background:rgba(15,20,14,.45);border:1px solid var(--line);color:var(--paper);font-family:'Jost',sans-serif;font-weight:300;font-size:15px;padding:14px 15px}
-.field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 22px,calc(100% - 14px) 22px;background-size:6px 6px;background-repeat:no-repeat}
-.field select option{background:var(--ink);color:var(--paper)}
-.err{font-size:12.5px;color:#e0a9a9;min-height:17px;margin-top:4px}
+.field label{display:block;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(46,61,49,.6);margin-bottom:9px}
+.field input,.field select{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line-dark);color:var(--espresso);font-family:'Jost',sans-serif;font-weight:300;font-size:15px;padding:11px 2px}
+.field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--espresso) 50%),linear-gradient(135deg,var(--espresso) 50%,transparent 50%);background-position:calc(100% - 20px) 18px,calc(100% - 14px) 18px;background-size:6px 6px;background-repeat:no-repeat}
+.field select option{background:var(--paper);color:var(--espresso)}
+.err{font-size:12.5px;color:#b23b3b;min-height:17px;margin-top:4px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* ── footer ─────────────────────────────────────────────────── */
-/* Marca centrada arriba, columnas de navegacion debajo: mismo orden que el
-   footer de sumbahill.com (10-ago), en vez de meter el logo dentro de la
-   primera de tres columnas en fila. */
-footer{border-top:1px solid var(--line);padding:clamp(48px,6vw,72px) var(--pad) 40px;background:var(--ink-2);text-align:center}
+footer{border-top:1px solid var(--line);padding:clamp(48px,6vw,72px) var(--pad) 40px;text-align:center}
 .foot-top{max-width:520px;margin:0 auto clamp(40px,5vw,56px)}
 .foot-top img{width:150px;margin:0 auto 20px}
 .foot-top p{margin:0 auto}
@@ -296,22 +268,15 @@ footer a:hover{color:var(--gold)}
 /* ── revelado ───────────────────────────────────────────────── */
 .rev{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
 .rev.in{opacity:1;transform:none}
-/* Cuando GSAP toma el control (ver script al final), la transicion CSS de
-   .rev se apaga: si se dejan las dos a la vez, GSAP anima el estilo inline
-   fotograma a fotograma y la transicion CSS intenta interpolar cada uno de
-   esos cambios por su cuenta, y el movimiento sale a tirones. */
 .gsap-on .rev{transition:none}
 
 /* ── grano ──────────────────────────────────────────────────── */
-/* Mismo patron que ya usa B2K: textura sutil sobre toda la pagina para que
-   no se vea plana. Se inyecta por JS solo si no se pidio menos movimiento. */
 .grain{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px 140px}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .hero-bg img{animation:none}
   .rev{opacity:1;transform:none;transition:none}
-  .mosaic img,.mosaic figure:hover img{transition:none;transform:none}
   .grain{display:none}
 }
 </style>
@@ -325,16 +290,14 @@ footer a:hover{color:var(--gold)}
     <a href="#island">The island</a>
     <a href="#masterplan">Masterplan</a>
     <a href="#residences">Residences</a>
-    <a href="#ownership">Ownership</a>
-    <a href="#process">Process</a>
-    <a class="btn btn-ghost" href="#contact">Get the brochure</a>
+    <a class="btn" href="#contact">Get the brochure</a>
   </nav>
 </header>
 
 <main id="top">
 
   <!-- ══ HERO ═══════════════════════════════════════════════ -->
-  <section class="hero">
+  <section class="hero dark">
     <div class="hero-bg">
       <img src="assets/sanda-beach-club-hero.jpg" alt="The beach club at Sandalwoods, on the south coast of Sumba" fetchpriority="high" width="1600" height="900">
     </div>
@@ -342,7 +305,7 @@ footer a:hover{color:var(--gold)}
       <span class="eyebrow">Sumba · Indonesia</span>
       <h1>Where luxury is lived barefoot</h1>
       <p class="lede">Invest in a pristine paradise, one hour's flight from Bali.</p>
-      <p>Sandalwoods is a masterplan of more than 90 plots running from the sand up a private hillside on the south coast of Sumba. A beach club below, three villa designs to choose from, and land you can build on your own terms. Villas from €69,000. Plots from €29,900.</p>
+      <p>Sandalwoods is a masterplan of more than 90 plots running from the sand up a private hillside on the south coast of Sumba. A beach club below, three villa designs to choose from, and land you can build on your own terms.</p>
       <div class="hero-stats">
         <div><b>90+</b><span>Oceanfront plots</span></div>
         <div><b>180°</b><span>Ocean views</span></div>
@@ -356,80 +319,43 @@ footer a:hover{color:var(--gold)}
     </div>
   </section>
 
+  <!-- ══ GANCHO DE PRECIO ═══════════════════════════════════ -->
+  <section style="text-align:center">
+    <div class="wrap">
+      <div class="head center rev">
+        <h2>Your plot in paradise, <em style="font-style:italic;color:var(--accent)">from €29,900</em></h2>
+        <p style="margin:20px auto 0">Over 90 oceanfront plots facing an untouched stretch of the Indian Ocean, with guaranteed views and the freedom to build a luxury villa with your own private pool.</p>
+      </div>
+      <img class="hook-img rev" src="assets/sumba-map.webp" alt="Map of the Indonesian archipelago showing flight times from Bali to Sumba" loading="lazy" width="934" height="357">
+      <p class="small mut" style="margin-top:26px;letter-spacing:.14em;text-transform:uppercase">Backed by <strong style="font-weight:500;color:var(--accent)">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:var(--accent)">Lawang</strong></p>
+    </div>
+  </section>
+
   <!-- ══ LA ISLA ════════════════════════════════════════════ -->
-  <section id="island" class="light">
+  <section id="island">
+    <div class="wrap two">
+      <div class="rev">
+        <span class="eyebrow">A gem still to be discovered</span>
+        <h2 style="margin-top:16px">Discover the island of Sumba</h2>
+        <p style="margin-top:22px">Sumba sits at the southern edge of Indonesia, where the Antarctic current keeps the air moving and the temperature between 21 and 33 degrees all year. Sunny days are the norm here and the night sky is a nightly event.</p>
+        <p style="margin-top:16px">Nature still sets the rhythm: empty beaches, wild savannah, waterfalls cut into the rock, and villages that have kept the Marapu beliefs and their ancestral architecture for more than a thousand years. Indonesia is one of the world's surf capitals, and Sumba has the waves without the crowd.</p>
+        <p style="margin-top:16px">NIHI Sumba, Lelewatu, Umarato, Bobocabin and Hotel Sanubari are all on the island: luxury arrived here before mass tourism did.</p>
+      </div>
+      <div class="grid island-grid rev">
+        <img class="full" src="assets/island-sunset.webp" alt="Sunset over the beach in Sumba" loading="lazy" width="1400" height="933">
+        <img src="assets/island-waterfall.webp" alt="Natural pool at the foot of a waterfall in Sumba" loading="lazy" width="800" height="600">
+        <img src="assets/culture.webp" alt="Local residents of Sumba at a village gathering" loading="lazy" width="800" height="1200">
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CHOOSE YOUR DREAM ══════════════════════════════════ -->
+  <section id="residences" class="dark">
     <div class="wrap">
-      <div class="head rev">
-        <span class="eyebrow">The island</span>
-        <h2>An island still writing its first chapter</h2>
-        <p>Sumba sits at the southern edge of Indonesia, where the Antarctic current keeps the air moving and the temperature between 21 and 33 degrees all year. Sunny days are the norm here and the night sky is a nightly event.</p>
-        <p style="margin-top:18px">Nature still sets the rhythm: empty beaches, wild savannah, waterfalls cut into the rock, and villages that have kept the Marapu beliefs and their ancestral architecture for more than a thousand years. Indonesia is one of the world's surf capitals, and Sumba has the waves without the crowd. NIHI Sumba, Lelewatu, Umarato, Bobocabin and Hotel Sanubari are all on the island: luxury arrived here before mass tourism did.</p>
-      </div>
-
-      <div class="grid mosaic">
-        <figure><img src="assets/island-surf.webp" alt="Waves breaking on an empty Sumba beach seen from the air" loading="lazy" width="807" height="454"><figcaption>World-class surf, no crowd</figcaption></figure>
-        <figure><img src="assets/island-waterfall.webp" alt="Natural pool at the foot of a waterfall in Sumba" loading="lazy" width="800" height="600"><figcaption>Waterfalls inland</figcaption></figure>
-        <figure class="tall"><img src="assets/culture.webp" alt="Local residents of Sumba at a village gathering" loading="lazy" width="800" height="1200"><figcaption>1,000+ years of Marapu culture</figcaption></figure>
-        <figure><img src="assets/island-sandbar.webp" alt="Sandbar reaching into turquoise water on the Sumba coast" loading="lazy" width="807" height="454"><figcaption>Ratenggaro and Praijing nearby</figcaption></figure>
-        <figure><img src="assets/island-village.webp" alt="Coastal village and green fields on the Sumba shoreline" loading="lazy" width="807" height="454"><figcaption>11,153 km² of island</figcaption></figure>
-        <figure><img src="assets/island-sunset.webp" alt="Sunset over the beach in Sumba" loading="lazy" width="1400" height="933"><figcaption>Sunset on the south coast</figcaption></figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ CONEXIONES ═════════════════════════════════════════ -->
-  <section style="padding-top:0">
-    <div class="wrap two rev">
-      <img src="assets/sumba-map.webp" alt="Map of the Indonesian archipelago showing flight times from Bali and Komodo to Sumba" loading="lazy" width="934" height="357" style="border:1px solid var(--line)">
-      <div>
-        <span class="eyebrow" style="display:block;margin-bottom:18px">Connections</span>
-        <h2 style="font-size:clamp(26px,3.2vw,40px)">Remote, not cut off</h2>
-        <p style="margin-top:20px">One hour's flight from Bali, or from Darwin in Australia. From the island's main airport it is another hour to the gate: close enough to reach in a morning, far enough that nobody arrives by accident.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ ORIGEN DE LA MARCA ═════════════════════════════════ -->
-  <section class="light">
-    <div class="wrap two rev">
-      <div>
-        <span class="eyebrow" style="display:block;margin-bottom:18px">The name</span>
-        <h2>Sandalwood Island</h2>
-        <p style="margin-top:22px">Sumba was once Pulau Cendana, the Sandalwood Island, connected to the world through the trade of one of Asia's most valuable woods. Sandalwood meant more than money here. It carried spiritual weight and a link to the ancestors in the rituals of the Marapu tradition.</p>
-        <p style="margin-top:18px">The Sandalwood pony became the island's other emblem, a symbol of status and spiritual connection present in ceremony, in ikat weaving and in the island's own name. The resort takes its name from both.</p>
-      </div>
-      <img src="assets/resort-aerial.webp" alt="Aerial view of the Sandalwoods hillside above the sea in Sumba" loading="lazy" width="1120" height="737">
-    </div>
-  </section>
-
-  <!-- ══ MASTERPLAN ═════════════════════════════════════════ -->
-  <section id="masterplan">
-    <div class="wrap">
-      <div class="head rev">
-        <span class="eyebrow">The masterplan</span>
-        <h2>Five zones, one hillside</h2>
-        <p>The land climbs from the sand to the ridge, so every level keeps its own view of the water. What you buy depends on how high you want to sit and how much you want to decide yourself.</p>
-      </div>
-      <div class="plan-wrap">
-        <img class="rev" src="assets/masterplan.webp" alt="Site plan of Sandalwoods Resort showing the Beach Club, Bungalow Zone, Dune villa Zone, Dream villa Zone and Free Zone" loading="lazy" width="1100" height="1443">
-        <ul class="zones">
-          <li><span class="dot" aria-hidden="true"></span><div><span class="tag">On the sand</span><h3>Beach Club</h3><p>Pools, restaurant and beach service at the foot of the hill. Part of the masterplan and built in phases.</p></div></li>
-          <li><span class="dot" aria-hidden="true"></span><div><span class="tag">Lower Zone</span><h3>Bungalow</h3><p>The closest units to the water. Sold with the land included in the price.</p></div></li>
-          <li><span class="dot" aria-hidden="true"></span><div><span class="tag">Middle Zone</span><h3>Dune villa</h3><p>You choose the plot, we build the Dune on it. The best of both worlds: a finished house and a site you picked.</p></div></li>
-          <li><span class="dot" aria-hidden="true"></span><div><span class="tag">Upper Zone</span><h3>Dream villa</h3><p>The high ground, and the widest view of the coast. Two bedrooms.</p></div></li>
-          <li><span class="dot" aria-hidden="true"></span><div><span class="tag">Free Zone</span><h3>Plots</h3><p>Land for sale with development freedom inside the masterplan rules, which exist to protect what the view is worth. Build with us or with your own architect.</p></div></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ RESIDENCIAS ════════════════════════════════════════ -->
-  <section id="residences" class="light">
-    <div class="wrap">
-      <div class="head rev">
+      <div class="head center rev">
         <span class="eyebrow">The residences</span>
-        <h2>Choose your dream</h2>
-        <p>Four ways to own a piece of Sumba — from a turnkey beachfront bungalow to a blank canvas facing the Indian Ocean. Each villa comes with a bathroom per bedroom, an open kitchen, an outdoor area and a private pool.</p>
+        <h2 style="margin-top:14px">Choose your dream</h2>
+        <p style="margin:18px auto 0">Four ways to own a piece of Sumba — from a turnkey beachfront bungalow to a blank canvas facing the Indian Ocean. Each villa comes with a bathroom per bedroom, an open kitchen, an outdoor area and a private pool.</p>
       </div>
 
       <div class="grid villas">
@@ -490,138 +416,37 @@ footer a:hover{color:var(--gold)}
         </article>
       </div>
 
-      <p class="small mut rev" style="max-width:80ch;margin-top:clamp(28px,3.6vw,44px)">Villa interiors, exteriors and layouts on this page are architectural renders. Photographs of the island, the site plan and the construction images are real. Prices are indicative and confirmed in writing before any payment.</p>
+      <p class="small mut rev" style="max-width:80ch;margin:clamp(28px,3.6vw,44px) auto 0;text-align:center">Villa interiors, exteriors and layouts on this page are architectural renders. Photographs of the island, the site plan and the construction images are real. Prices are indicative and confirmed in writing before any payment.</p>
     </div>
   </section>
 
-  <!-- ══ SERVICIOS ══════════════════════════════════════════ -->
-  <section>
+  <!-- ══ MASTERPLAN ═════════════════════════════════════════ -->
+  <section id="masterplan">
     <div class="wrap">
-      <div class="head rev">
-        <span class="eyebrow">Life on site</span>
-        <h2>What is planned, and what is already there</h2>
-        <p>The resort is being built in phases. The list below is the masterplan, not an inventory of what is finished today. Ask us where each piece stands before you decide.</p>
+      <div class="head center rev">
+        <span class="eyebrow">Architecture set within nature</span>
+        <h2 style="margin-top:14px">Where Sumba Hills is born</h2>
       </div>
-      <div class="grid cols">
-        <div class="card">
-          <span class="num">01</span>
-          <h3>At the resort</h3>
-          <ul class="tick">
-            <li>Beach club</li><li>Pool and beach service</li>
-            <li>Spa</li><li>Gym</li>
-            <li>Padel</li><li>Beach volley</li>
-            <li>Coworking</li><li>Private club</li>
-            <li>Scooter and quad rental</li><li>Hotel services in your villa</li>
-          </ul>
-        </div>
-        <div class="card">
-          <span class="num">02</span>
-          <h3>On the water</h3>
-          <ul class="tick">
-            <li>Surf</li><li>Kitesurf</li>
-            <li>Jet ski</li><li>Kayak and SUP</li>
-            <li>Traditional fishing</li><li>Spear fishing</li>
-            <li>Turtle hatchings</li><li>Empty beaches</li>
-          </ul>
-        </div>
-        <div class="card">
-          <span class="num">03</span>
-          <h3>Inland</h3>
-          <ul class="tick">
-            <li>Horse riding</li><li>Mountain biking</li>
-            <li>Waterfalls</li><li>Wild savannah</li>
-            <li>Ratenggaro village</li><li>Praijing village</li>
-            <li>Guided island tours</li><li>Ikat weaving</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ PROPIEDAD ══════════════════════════════════════════ -->
-  <section id="ownership" class="light">
-    <div class="wrap">
-      <div class="head rev">
-        <span class="eyebrow">Ownership</span>
-        <h2>How a foreigner holds land in Indonesia</h2>
-        <p>Indonesian law does not give a foreign national the same title as an Indonesian citizen. There are three routes, and the one that applies depends on who is buying. All of them are formalised before an authorised notary.</p>
-      </div>
-      <div class="grid cols">
-        <div class="card">
-          <span class="num">Foreign individual</span>
-          <h3>Up to 90 years</h3>
-          <p>A right of use (Hak Sewa), structured as three successive contracts of up to 30 years each.</p>
-        </div>
-        <div class="card">
-          <span class="num">Company in Indonesia · PT PMA</span>
-          <h3>Up to 80 years</h3>
-          <p>A building-use right (Hak Guna Bangunan, HGB) acquired through an Indonesian company. This route allows the full transfer of the right from the previous owner to the company.</p>
-        </div>
-        <div class="card">
-          <span class="num">Indonesian national</span>
-          <h3>Full ownership</h3>
-          <p>Transfer of the ownership right (Hak Milik, SHM), formalised by public deed before an authorised notary.</p>
-        </div>
-      </div>
-      <p class="small mut rev" style="margin-top:32px;max-width:80ch">Which route fits your case is set out in writing, with the title documents, before any payment is made. This page is a summary and not legal advice.</p>
-    </div>
-  </section>
-
-  <!-- ══ PROCESO ════════════════════════════════════════════ -->
-  <section id="process">
-    <div class="wrap">
-      <div class="head rev">
-        <span class="eyebrow">The process</span>
-        <h2>Payments tied to what is built</h2>
-        <p>Nothing is paid against a promise. Each release is matched to a stage of the work that can be checked on site.</p>
-      </div>
-      <div class="grid cols" style="margin-bottom:clamp(36px,4vw,56px)">
-        <div class="card"><span class="num">Step 01</span><h3>€5,000 deposit</h3><p>The reservation deposit holds the plot or the unit while the paperwork is prepared.</p></div>
-        <div class="card"><span class="num">Step 02</span><h3>Land over 3 months</h3><p>The land is paid across three months, against its own contract.</p></div>
-        <div class="card"><span class="num">Step 03</span><h3>Four payments of 25%</h3><p>The villa is paid in four instalments, each one released against a construction milestone.</p></div>
-        <div class="card"><span class="num">Step 04</span><h3>Handover</h3><p>Certification, final payment and keys. Interior furniture is quoted separately.</p></div>
-      </div>
-
-      <div class="two rev">
-        <div>
-          <span class="eyebrow" style="display:block;margin-bottom:18px">Track record</span>
-          <h2 style="font-size:clamp(26px,3.2vw,40px)">From vision to reality</h2>
-          <p style="margin-top:20px">We work with our own local structure, alongside technical and legal partners on the ground, and with real knowledge of the regulations, timelines and processes in Indonesia.</p>
-          <ul class="tick" style="margin-top:26px;columns:1">
-            <li>Over 5 years operating in Indonesia</li>
-            <li>Over 20 projects developed in Bali and Sumba</li>
-            <li>Over a year of pre-development: land adaptation, roads and access, water infrastructure</li>
-            <li>First pilot bungalow completed, Phase 1 underway</li>
-            <li>Notarised contracts, legal certifications and continuous monitoring</li>
-          </ul>
-        </div>
-        <img src="assets/progress-build.webp" alt="Construction work underway on the Sandalwoods site in Sumba" loading="lazy" width="722" height="567">
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ VISITAS ════════════════════════════════════════════ -->
-  <section class="light">
-    <div class="wrap two rev">
-      <img src="assets/investors.webp" alt="Group of investors visiting the Sandalwoods site in Sumba" loading="lazy" width="1057" height="705">
-      <div>
-        <span class="eyebrow" style="display:block;margin-bottom:18px">Visits</span>
-        <h2>Come and stand on it</h2>
-        <p style="margin-top:22px">We organise trips for investors to see Sandalwoods and the island itself. If you are already in Sumba, we can walk the plots with you today. Send a message and we will arrange it.</p>
-        <div class="hero-cta" style="margin-top:30px">
-          <a class="btn" href="https://wa.me/6281138200932?text=Hi%2C%20I%27d%20like%20to%20visit%20Sumba%20Hills" target="_blank" rel="noopener">Message us on WhatsApp</a>
-        </div>
+      <div class="grid plan2 rev">
+        <figure>
+          <img src="assets/masterplan.webp" alt="Site plan of Sandalwoods Resort showing the Beach Club, Bungalow Zone, Dune villa Zone, Dream villa Zone and Free Zone" loading="lazy" width="1100" height="1443">
+          <figcaption>General masterplan</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/hills.webp" alt="Hillside above the coast where the Sandalwoods plots are located" loading="lazy">
+          <figcaption>The hillside from above</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
   <!-- ══ CONTACTO ═══════════════════════════════════════════ -->
-  <section id="contact" style="background:var(--ink-2)">
+  <section id="contact">
     <div class="wrap two" style="align-items:start">
       <div class="rev">
         <span class="eyebrow" style="display:block;margin-bottom:18px">Contact</span>
         <h2>Get the brochure</h2>
-        <p style="margin-top:22px">Leave your email and we will send you the welcome brochure with the masterplan, the three villa designs and the current price list. If you tell us what interests you, we will answer with the plots still available in that zone.</p>
+        <p style="margin-top:22px">Leave your email and we will send you the welcome brochure with the masterplan, the villa designs and the current price list. If you tell us what interests you, we will answer with the plots still available in that zone.</p>
 
         <form id="leadForm" class="form" novalidate>
           <div class="field full">
@@ -662,10 +487,10 @@ footer a:hover{color:var(--gold)}
       </div>
 
       <div class="rev">
-        <img src="assets/beachclub-real.webp" alt="The bay at Sandalwoods seen from the air, with boats moored offshore" loading="lazy" width="1500" height="844">
+        <img src="assets/beachclub-real.webp" alt="The bay at Sandalwoods seen from the air, with boats moored offshore" loading="lazy" width="1500" height="844" style="border:1px solid var(--line-dark)">
         <ul style="list-style:none;margin-top:26px">
-          <li style="padding:16px 0;border-bottom:1px solid var(--line)"><span class="small mut" style="display:block;letter-spacing:.24em;text-transform:uppercase">Email</span><a href="mailto:sumbahills@lawangproperties.com" style="font-size:16px">sumbahills@lawangproperties.com</a></li>
-          <li style="padding:16px 0;border-bottom:1px solid var(--line)"><span class="small mut" style="display:block;letter-spacing:.24em;text-transform:uppercase">WhatsApp and phone</span><a href="tel:+6281138200932" style="font-size:16px">+62 811-3820-0932</a></li>
+          <li style="padding:16px 0;border-bottom:1px solid var(--line-dark)"><span class="small mut" style="display:block;letter-spacing:.24em;text-transform:uppercase">Email</span><a href="mailto:sumbahills@lawangproperties.com" style="font-size:16px">sumbahills@lawangproperties.com</a></li>
+          <li style="padding:16px 0;border-bottom:1px solid var(--line-dark)"><span class="small mut" style="display:block;letter-spacing:.24em;text-transform:uppercase">WhatsApp and phone</span><a href="tel:+6281138200932" style="font-size:16px">+62 811-3820-0932</a></li>
           <li style="padding:16px 0"><span class="small mut" style="display:block;letter-spacing:.24em;text-transform:uppercase">Instagram</span><a href="https://www.instagram.com/sumbahills/" target="_blank" rel="noopener" style="font-size:16px">@sumbahills</a></li>
         </ul>
       </div>
@@ -674,7 +499,7 @@ footer a:hover{color:var(--gold)}
 
 </main>
 
-<footer>
+<footer class="dark">
   <div class="foot-top">
     <img src="assets/sumba-hills-logo-white.png" alt="Sumba Hills" width="150" height="36" loading="lazy">
     <p class="small mut">Barefoot beachfront living on the south coast of Sumba, Indonesia. Guaranteed by Sandalwoods, secured by Lawang.</p>
@@ -686,8 +511,6 @@ footer a:hover{color:var(--gold)}
         <li><a href="#island">The island</a></li>
         <li><a href="#masterplan">Masterplan</a></li>
         <li><a href="#residences">Residences</a></li>
-        <li><a href="#ownership">Ownership</a></li>
-        <li><a href="#process">Process</a></li>
       </ul>
     </div>
     <div>
@@ -733,8 +556,7 @@ footer a:hover{color:var(--gold)}
   addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
 
   // Grano de fondo, igual que en B2K: textura sutil para que las secciones
-  // planas no se vean esteriles. No se pone si se pidio menos movimiento
-  // (aunque es estatico, es fiel al mismo espiritu que apaga el resto).
+  // planas no se vean esteriles. No se pone si se pidio menos movimiento.
   if (!reduceMotion){
     var g = document.createElement('div');
     g.className = 'grain';
@@ -745,27 +567,21 @@ footer a:hover{color:var(--gold)}
     document.documentElement.classList.add('gsap-on');
     gsap.registerPlugin(ScrollTrigger);
 
-    // Bloques grandes (los .rev de siempre): mismo fade+up, ahora coordinado
-    // por ScrollTrigger.batch en vez de un IntersectionObserver a pelo.
     gsap.set('.rev', {autoAlpha:0, y:24});
     ScrollTrigger.batch('.rev', {
       start:'top 90%',
       once:true,
       onEnter: function(els){
-        // clearProps quita el estilo inline al terminar; sin la clase .in,
-        // el elemento volveria a caer en el opacity:0 de base de .rev.
         els.forEach(function(el){ el.classList.add('in'); });
         gsap.to(els, {autoAlpha:1, y:0, duration:.9, ease:'power2.out', stagger:.1, clearProps:'transform,opacity,visibility'});
       }
     });
 
-    // Grupos que antes aparecian en bloque de golpe: ahora cada elemento
-    // entra por su cuenta, con un pequeno desfase entre ellos.
+    // Grupos que entran elemento a elemento en vez de en bloque.
     [
-      ['.mosaic figure', .07],
-      ['.cols .card', .09],
-      ['.zones li', .08],
-      ['.villas .unit', .1]
+      ['.island-grid img', .08],
+      ['.villas .unit', .1],
+      ['.plan2 figure', .1]
     ].forEach(function(group){
       var sel = group[0], gap = group[1];
       if (!document.querySelector(sel)) return;
@@ -777,21 +593,14 @@ footer a:hover{color:var(--gold)}
       });
     });
 
-    // Hero: el titular y el CTA entran en cascada al cargar, en vez de
-    // aparecer los cuatro de golpe.
+    // Hero: el titular y el CTA entran en cascada al cargar.
     gsap.from('.hero .eyebrow, .hero h1, .hero .lede, .hero p, .hero-stats, .hero-cta', {
       autoAlpha:0, y:22, duration:1, ease:'power2.out', stagger:.09, delay:.15, clearProps:'transform,opacity,visibility'
     });
 
-    // La tipografia Jost llega por Google Fonts despues del primer layout:
-    // el reflow que provoca desplaza todo lo que hay debajo del alto de la
-    // pagina, y los ScrollTrigger ya creados quedan con posiciones caducas
-    // (una seccion podia no revelarse nunca). refresh() los recalcula.
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ ScrollTrigger.refresh(); });
     addEventListener('load', function(){ ScrollTrigger.refresh(); });
   } else {
-    // Sin GSAP (fallo de CDN) o con "menos movimiento" pedido: el revelado
-    // de toda la vida, con IntersectionObserver simple.
     if ('IntersectionObserver' in window && !reduceMotion){
       var io = new IntersectionObserver(function(es){
         es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
