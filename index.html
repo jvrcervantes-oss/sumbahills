@@ -72,12 +72,13 @@
 <style>
 :root{
   /* Paleta real de marca, muestreada de sumbahill.com (10-ago-2026): crema
-     #F6F5F0, terracota #652A0E, verde bosque #104A3E (seccion de contacto,
-     igual que en la referencia), blanco puro #FFFFFF. Sustituye el ink/gold
-     oscuro anterior — la tipografia Jost se mantiene, es una decision ya
-     tomada por el cliente y ajena a este cambio de color. */
+     #F6F5F0 y terracota #652A0E, sin mas colores — el verde bosque que
+     llevaba la seccion de contacto se quito (10-ago, tarde): es el verde de
+     Lawang, no de Sumba Hills, mismo error que ya se corrigio una vez en
+     qr.html. Solo café y crema en toda la web. La tipografia Jost se
+     mantiene, es una decision ya tomada por el cliente y ajena al color. */
   --ink:#652a0e;
-  --ink-2:#104a3e;
+  --ink-2:#652a0e;
   --paper:#ffffff;
   --gold:#f6f5f0;
   --sand:#f6f5f0;
@@ -151,7 +152,24 @@ section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 .nav a:not(.btn):hover::after{transform:scaleX(1)}
 .nav .btn{padding:11px 18px}
 .nav .btn::after{content:none}
-@media (max-width:1000px){.nav a:not(.btn){display:none}}
+
+/* ── menú móvil ─────────────────────────────────────────────── */
+/* Antes, por debajo de 1000px los enlaces simplemente desaparecían (solo
+   quedaba el logo y el CTA) — sin forma de llegar a Masterplan, Residences,
+   Ownership o Process desde el menú. Ahora entran en un panel a pantalla
+   completa que abre el botón de hamburguesa. */
+.menu-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:34px;height:34px;padding:0;border:0;background:none;cursor:pointer;position:relative;z-index:2}
+.menu-toggle span{display:block;width:100%;height:1px;background:var(--paper);transition:transform .3s cubic-bezier(.23,1,.32,1),opacity .3s ease}
+.menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media (max-width:1000px){
+  .menu-toggle{display:flex}
+  .nav{position:fixed;inset:0;z-index:1;flex-direction:column;align-items:flex-start;justify-content:center;gap:26px;padding:0 var(--pad);background:var(--ink);opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+  .nav.open{opacity:1;visibility:visible}
+  .nav a:not(.btn){display:block;font-size:16px}
+  .nav .btn{margin-top:10px}
+}
 
 /* ── hero ───────────────────────────────────────────────────── */
 .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(48px,7vw,86px);overflow:hidden}
@@ -288,7 +306,8 @@ footer a:hover{color:var(--gold)}
 
 <header class="hdr" id="hdr">
   <a href="#top" aria-label="Sumba Hills, home"><img src="assets/sumba-hills-logo-white.png" alt="Sumba Hills" width="150" height="36"></a>
-  <nav class="nav">
+  <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+  <nav class="nav" id="nav">
     <a href="#island">The island</a>
     <a href="#masterplan">Masterplan</a>
     <a href="#residences">Residences</a>
@@ -737,6 +756,18 @@ footer a:hover{color:var(--gold)}
   onScroll();
   addEventListener('scroll', onScroll, {passive:true});
 
+  // Menu movil: por debajo de 1000px los enlaces viven en un panel a
+  // pantalla completa que abre este boton.
+  var menuToggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('nav');
+  var closeMenu = function(){ nav.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); };
+  menuToggle.addEventListener('click', function(){
+    var open = nav.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+  addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+
   // Grano de fondo, igual que en B2K: textura sutil para que las secciones
   // planas no se vean esteriles. No se pone si se pidio menos movimiento
   // (aunque es estatico, es fiel al mismo espiritu que apaga el resto).
@@ -786,14 +817,6 @@ footer a:hover{color:var(--gold)}
     // aparecer los cuatro de golpe.
     gsap.from('.hero .eyebrow, .hero h1, .hero .lede, .hero p, .hero-cta', {
       autoAlpha:0, y:22, duration:1, ease:'power2.out', stagger:.09, delay:.15, clearProps:'transform,opacity,visibility'
-    });
-
-    // Paralaje suave del fondo del hero al hacer scroll (independiente del
-    // zoom Ken Burns, que vive en la propia imagen — aqui se mueve el
-    // contenedor, no la imagen, para que las dos animaciones no se pisen).
-    gsap.to('.hero-bg', {
-      yPercent:14, ease:'none',
-      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}
     });
   } else {
     // Sin GSAP (fallo de CDN) o con "menos movimiento" pedido: el revelado
