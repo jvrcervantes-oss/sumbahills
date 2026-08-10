@@ -59,11 +59,53 @@ const QR_SOURCE = 'sumba-hills-qr';   // el valor que manda qr.html
 // Condiciones del equipo que trabaja el QR (IDR). Un solo sitio donde tocarlas.
 const PAY_FIXED_MONTH = 2000000;
 const PAY_PER_LEAD    = 20000;
+const PAY_PER_VISIT   = 100000;
+const PAY_PER_PATING  = 500000;
 const PAY_PER_CLOSED  = 5000000;
+
+// Estado del lead — el mismo panel de solo-lectura gana un campo de estado y
+// una nota por fila (10-ago-2026), pedido por el owner. Se guarda aparte del
+// CSV (que sigue siendo el que escribe api/lead.php) para no tocar su formato.
+const STATUSES  = ['New', 'Contacted', 'Interested', 'Not Interested', 'Closed'];
+const META_FILE = __DIR__ . '/private/leads-meta.json';
+
+function loadMeta() {
+    if (!is_readable(META_FILE)) return [];
+    $j = json_decode((string)file_get_contents(META_FILE), true);
+    return is_array($j) ? $j : [];
+}
+
+function saveMeta($meta) {
+    file_put_contents(META_FILE, json_encode($meta, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+}
 
 if (isset($_GET['logout'])) {
     session_destroy();
     header('Location: leads.php');
+    exit;
+}
+
+// Token anti-CSRF para el POST de estado/nota: el login ya se protege solo
+// (es la propia contraseña), pero guardar una nota es una escritura y no
+// debe poder dispararla una página de un tercero mientras el operador tiene
+// sesión abierta aquí.
+if (empty($_SESSION['csrf'])) {
+    $_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
+$csrf = $_SESSION['csrf'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_meta') {
+    if (!empty($_SESSION['sh_leads_auth']) && hash_equals($csrf, $_POST['csrf'] ?? '')) {
+        $key    = (string)($_POST['key'] ?? '');
+        $status = (string)($_POST['status'] ?? '');
+        if ($key !== '' && in_array($status, STATUSES, true)) {
+            $note = mb_substr(trim((string)($_POST['note'] ?? '')), 0, 500);
+            $meta = loadMeta();
+            $meta[$key] = ['status' => $status, 'note' => $note];
+            saveMeta($meta);
+        }
+    }
+    header('Location: leads.php');   // PRG: recargar no reenvía el POST
     exit;
 }
 
@@ -83,10 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $auth = !empty($_SESSION['sh_leads_auth']);
 
-// Este panel es SOLO LECTURA a propósito (27-jul-2026): lo usan los operadores del QR,
-// que no deben poder vaciar la lista. Hubo una acción de reset aquí y se retiró.
+// El listado de leads en sí sigue siendo SOLO LECTURA a propósito (27-jul-2026): los
+// operadores del QR no deben poder vaciarlo. Hubo una acción de reset aquí y se retiró.
 // Para poner los leads a cero: hPanel > File Manager > public_html/sumbahills/private/
 // leads.csv, dejar únicamente la primera línea (la cabecera de columnas).
+// El estado/nota por lead (10-ago-2026) SÍ escribe — es metadato por fila, no borra nada.
 
 // --- Lectura del CSV -------------------------------------------------------
 // Columnas: timestamp,email,name,whatsapp,source,property,ip
@@ -96,15 +139,25 @@ if ($auth) {
     if (!is_readable(CSV_FILE)) {
         $csvMissing = true;
     } else {
+        $meta = loadMeta();
         $fh = fopen(CSV_FILE, 'r');
         fgetcsv($fh);                    // cabecera
         while (($r = fgetcsv($fh)) !== false) {
             if (count($r) < 5 || $r[4] !== QR_SOURCE) continue;
+            $ts    = $r[0];
+            $email = unquote($r[1]);
+            // Clave del metadato: timestamp+email, los dos campos que ya trae
+            // cada fila y que juntos identifican el envío sin tocar el CSV.
+            $key = $ts . '|' . $email;
+            $m   = $meta[$key] ?? [];
             $rows[] = [
-                'ts'       => $r[0],
-                'email'    => unquote($r[1]),
+                'ts'       => $ts,
+                'email'    => $email,
                 'name'     => unquote($r[2]),
                 'whatsapp' => unquote($r[3]),
+                'key'      => $key,
+                'status'   => in_array($m['status'] ?? '', STATUSES, true) ? $m['status'] : 'New',
+                'note'     => (string)($m['note'] ?? ''),
             ];
         }
         fclose($fh);
@@ -140,8 +193,8 @@ function unquote($s) {
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 
-/** 2000000 → 'IDR 2.000.000' (separador de miles indonesio) */
-function idr($n) { return 'IDR ' . number_format((float)$n, 0, ',', '.'); }
+/** 2000000 → 'Rp2.000.000' (separador de miles indonesio) */
+function idr($n) { return 'Rp' . number_format((float)$n, 0, ',', '.'); }
 
 /** '2026-07-15T09:12:44+00:00' → '15 Jul 2026 · 09:12' */
 function fecha($iso) {
@@ -229,6 +282,14 @@ td a:hover{border-bottom-color:var(--tg)}
 .wa:hover{color:var(--tg)}
 .empty{padding:44px 24px;text-align:center;color:rgba(46,52,55,.55);font-size:14.5px}
 
+/* Estado + nota por lead */
+td.meta{vertical-align:top}
+.meta-form{display:flex;flex-direction:column;gap:6px;min-width:190px}
+.meta-form select,.meta-form input[type="text"]{font-family:var(--sans);font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--rl);color:var(--va);width:100%}
+.meta-form select:focus,.meta-form input[type="text"]:focus{border-color:var(--tg);background:#fff}
+.meta-form button{align-self:flex-start;background:var(--tg);color:var(--rl);border:none;border-radius:7px;padding:6px 14px;font-family:var(--sans);font-weight:600;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.meta-form button:hover{background:var(--tg-dark)}
+
 /* Condiciones del equipo */
 .terms{margin-top:26px}
 .terms h2{font-family:var(--sans);font-weight:500;font-size:clamp(19px,3vw,23px);color:var(--dl);margin:0 0 3px}
@@ -311,12 +372,12 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
     <div class="scroll">
       <table>
         <thead>
-          <tr><th>When</th><th>Name</th><th>WhatsApp</th><th>Email</th></tr>
+          <tr><th>When</th><th>Name</th><th>WhatsApp</th><th>Email</th><th>Status &amp; note</th></tr>
         </thead>
         <?php foreach ($porMes as $k => $leads): ?>
         <tbody>
           <tr class="mo">
-            <th colspan="4" scope="colgroup"><div>
+            <th colspan="5" scope="colgroup"><div>
               <span class="mo-name"><?= e(mes($k)) ?></span>
               <span class="mo-meta"><?= count($leads) ?> lead<?= count($leads) === 1 ? '' : 's' ?> · <?= idr(count($leads) * PAY_PER_LEAD) ?></span>
             </div></th>
@@ -335,6 +396,20 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
               <?php else: ?>—<?php endif; ?>
             </td>
             <td><a href="mailto:<?= e($r['email']) ?>"><?= e($r['email']) ?></a></td>
+            <td class="meta">
+              <form method="post" class="meta-form">
+                <input type="hidden" name="action" value="save_meta">
+                <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+                <input type="hidden" name="key" value="<?= e($r['key']) ?>">
+                <select name="status">
+                  <?php foreach (STATUSES as $s): ?>
+                    <option value="<?= e($s) ?>"<?= $s === $r['status'] ? ' selected' : '' ?>><?= e($s) ?></option>
+                  <?php endforeach; ?>
+                </select>
+                <input type="text" name="note" maxlength="500" value="<?= e($r['note']) ?>" placeholder="Note…">
+                <button type="submit">Save</button>
+              </form>
+            </td>
           </tr>
         <?php endforeach; ?>
         </tbody>
@@ -348,18 +423,20 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
     <h2>Team terms</h2>
     <p class="sub">Compensation for the team working the printed QR.</p>
     <dl class="rows">
-      <div class="row"><dt>Fixed salary</dt><dd><?= idr(PAY_FIXED_MONTH) ?> / month</dd></div>
-      <div class="row"><dt>Variable — per lead captured</dt><dd><?= idr(PAY_PER_LEAD) ?> / lead</dd></div>
-      <div class="row"><dt>Variable — per closed lead</dt><dd><?= idr(PAY_PER_CLOSED) ?> / closed lead</dd></div>
+      <div class="row"><dt>Monthly Salary (Fixed)</dt><dd><?= idr(PAY_FIXED_MONTH) ?> / month</dd></div>
+      <div class="row"><dt>Form new entry (Bonus)</dt><dd><?= idr(PAY_PER_LEAD) ?> / entry</dd></div>
+      <div class="row"><dt>Visit to project (Bonus)</dt><dd><?= idr(PAY_PER_VISIT) ?> / visit</dd></div>
+      <div class="row"><dt>Pating + Billboard Installation (Bonus)</dt><dd><?= idr(PAY_PER_PATING) ?></dd></div>
+      <div class="row"><dt>Sale of any property (Bonus)</dt><dd><?= idr(PAY_PER_CLOSED) ?> / sale</dd></div>
     </dl>
     <?php /* Solo se calcula lo que este panel sabe de verdad: los leads del QR. */ ?>
     <?php if (!$csvMissing): ?>
     <div class="accrued">
-      <span class="lbl"><?= count($rows) ?> lead<?= count($rows) === 1 ? '' : 's' ?> × <?= idr(PAY_PER_LEAD) ?> — variable earned on the leads listed above</span>
+      <span class="lbl"><?= count($rows) ?> lead<?= count($rows) === 1 ? '' : 's' ?> × <?= idr(PAY_PER_LEAD) ?> — new-entry bonus earned on the leads listed above</span>
       <span class="val"><?= idr(count($rows) * PAY_PER_LEAD) ?></span>
     </div>
     <?php endif; ?>
-    <p class="foot">All-time total. For a single month, use the figure on that month's heading in the table above. Both leave out the fixed salary and the closed-lead bonus: this panel tracks neither months worked nor which leads closed.</p>
+    <p class="foot">All-time total. For a single month, use the figure on that month's heading in the table above. It leaves out the fixed salary and the visit, installation and sale bonuses: this panel only tracks form entries, not visits, installations or sales.</p>
   </section>
 </main>
 <?php endif; ?>
