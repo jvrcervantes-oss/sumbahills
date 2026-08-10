@@ -237,6 +237,11 @@ a{color:var(--tg)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--tg);outline-offset:2px}
 main{max-width:920px;margin:0 auto;padding:clamp(28px,6vh,52px) clamp(20px,6vw,40px) clamp(40px,7vh,64px)}
 main.narrow{max-width:560px}
+/* La tabla ganó una 5ª columna (estado+nota, 10-ago-2026): a 920px de ancho el
+   formulario de esa columna se quedaba pegado al borde de la card, cortado por
+   el overflow:hidden que redondea sus esquinas — no llegaba a activar el
+   scroll horizontal. Más ancho en vez de forzar el scroll en escritorio. */
+main.wide{max-width:1180px}
 h1{font-family:var(--sans);font-weight:500;font-size:clamp(28px,6vw,44px);color:var(--dl);line-height:1.08;margin:0}
 .by-line{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--tg);margin:8px 0 22px;font-weight:600}
 .lede{font-size:clamp(15px,2vw,17px);color:rgba(46,52,55,.82);margin:0 0 28px;max-width:52ch}
@@ -303,7 +308,7 @@ td.meta{vertical-align:top}
 .accrued .lbl{font-size:13px;color:rgba(46,52,55,.7)}
 .accrued .val{font-size:20px;font-weight:600;color:var(--tg);white-space:nowrap;font-variant-numeric:tabular-nums}
 .terms .foot{font-size:12.5px;color:rgba(46,52,55,.55);margin-top:12px}
-footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;padding:20px clamp(20px,6vw,40px) 36px;font-size:12px;color:rgba(46,52,55,.55)}
+footer{border-top:1px solid var(--line);max-width:1180px;margin:40px auto 0;padding:20px clamp(20px,6vw,40px) 36px;font-size:12px;color:rgba(46,52,55,.55)}
 @media (max-width:560px){th,td{padding:13px 14px}}
 </style>
 </head>
@@ -348,7 +353,7 @@ footer{border-top:1px solid var(--line);max-width:920px;margin:40px auto 0;paddi
 </main>
 
 <?php else: ?>
-<main>
+<main class="wide">
   <div class="bar">
     <div>
       <h1>QR leads</h1>
