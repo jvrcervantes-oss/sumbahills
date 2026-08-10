@@ -114,20 +114,30 @@ section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 .rule{height:1px;background:var(--line);border:0}
 
 /* ── botones ────────────────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 26px;border:1px solid var(--gold);background:var(--gold);color:var(--ink);cursor:pointer;transition:background .25s,color .25s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:15px 26px;border:1px solid var(--gold);background:var(--gold);color:var(--ink);cursor:pointer;transition:background .25s ease,color .25s ease,border-color .25s ease,transform .16s cubic-bezier(.23,1,.32,1),box-shadow .25s ease}
+.btn::after{content:"→";display:inline-block;transition:transform .25s cubic-bezier(.23,1,.32,1)}
 .btn:hover{background:var(--paper);border-color:var(--paper);color:var(--ink)}
 .btn-ghost{background:transparent;color:var(--gold)}
 .btn-ghost:hover{background:var(--gold);color:var(--ink)}
-.btn:disabled{opacity:.55;cursor:default}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover,.btn-ghost:hover{transform:translateY(-2px);box-shadow:0 8px 16px -8px rgba(231,217,191,.4)}
+  .btn:hover::after{transform:translateX(4px)}
+}
+.btn:active{transform:scale(.97);transition-duration:.1s}
+.btn:disabled{opacity:.55;cursor:default;transform:none;box-shadow:none}
 
 /* ── header ─────────────────────────────────────────────────── */
 .hdr{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px var(--pad);transition:background .3s,padding .3s,border-color .3s;border-bottom:1px solid transparent}
 .hdr.on{background:rgba(11,15,16,.92);backdrop-filter:blur(10px);border-bottom-color:var(--line);padding:14px var(--pad)}
 .hdr img{width:clamp(112px,12vw,150px);height:auto}
 .nav{display:flex;align-items:center;gap:clamp(16px,2vw,30px)}
-.nav a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,239,231,.8)}
-.nav a:hover{color:var(--gold)}
+.nav a{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,239,231,.8);transition:color .25s ease}
+.nav a:not(.btn):hover{color:var(--gold)}
+.nav a:not(.btn){position:relative}
+.nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.23,1,.32,1)}
+.nav a:not(.btn):hover::after{transform:scaleX(1)}
 .nav .btn{padding:11px 18px}
+.nav .btn::after{content:none}
 @media (max-width:1000px){.nav a:not(.btn){display:none}}
 
 /* ── hero ───────────────────────────────────────────────────── */
@@ -200,7 +210,11 @@ section{padding:clamp(72px,10vw,140px) var(--pad);position:relative}
 
 /* ── listas de columnas ─────────────────────────────────────── */
 .cols{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-.card{border:1px solid var(--line);padding:clamp(24px,2.6vw,34px)}
+.card{border:1px solid var(--line);padding:clamp(24px,2.6vw,34px);transition:transform .3s cubic-bezier(.23,1,.32,1),border-color .3s ease}
+@media (hover:hover) and (pointer:fine){
+  .card:hover{transform:translateY(-5px);border-color:var(--gold)}
+  .light .card:hover{border-color:#8b5e3c}
+}
 .light .card{border-color:var(--line-dark)}
 .card h3{font-size:20px;margin-bottom:12px}
 .card .num{font-size:11px;letter-spacing:.24em;color:var(--gold);display:block;margin-bottom:16px}
@@ -237,11 +251,23 @@ footer a:hover{color:var(--gold)}
 /* ── revelado ───────────────────────────────────────────────── */
 .rev{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
 .rev.in{opacity:1;transform:none}
+/* Cuando GSAP toma el control (ver script al final), la transicion CSS de
+   .rev se apaga: si se dejan las dos a la vez, GSAP anima el estilo inline
+   fotograma a fotograma y la transicion CSS intenta interpolar cada uno de
+   esos cambios por su cuenta, y el movimiento sale a tirones. */
+.gsap-on .rev{transition:none}
+
+/* ── grano ──────────────────────────────────────────────────── */
+/* Mismo patron que ya usa B2K: textura sutil sobre toda la pagina para que
+   no se vea plana. Se inyecta por JS solo si no se pidio menos movimiento. */
+.grain{position:fixed;inset:0;z-index:150;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px 140px}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .hero-bg img{animation:none}
   .rev{opacity:1;transform:none;transition:none}
   .mosaic img,.mosaic figure:hover img{transition:none;transform:none}
+  .grain{display:none}
 }
 </style>
 </head>
@@ -299,7 +325,7 @@ footer a:hover{color:var(--gold)}
         <p style="margin-top:18px">Nature still sets the rhythm: empty beaches, wild savannah, waterfalls cut into the rock, and villages that have kept the Marapu beliefs and their ancestral architecture for more than a thousand years. Indonesia is one of the world's surf capitals, and Sumba has the waves without the crowd. NIHI Sumba, Lelewatu, Umarato, Bobocabin and Hotel Sanubari are all on the island: luxury arrived here before mass tourism did.</p>
       </div>
 
-      <div class="grid mosaic rev">
+      <div class="grid mosaic">
         <figure><img src="assets/island-surf.webp" alt="Waves breaking on an empty Sumba beach seen from the air" loading="lazy" width="807" height="454"><figcaption>World-class surf, no crowd</figcaption></figure>
         <figure><img src="assets/island-waterfall.webp" alt="Natural pool at the foot of a waterfall in Sumba" loading="lazy" width="800" height="600"><figcaption>Waterfalls inland</figcaption></figure>
         <figure class="tall"><img src="assets/culture.webp" alt="Local residents of Sumba at a village gathering" loading="lazy" width="800" height="1200"><figcaption>1,000+ years of Marapu culture</figcaption></figure>
@@ -343,8 +369,8 @@ footer a:hover{color:var(--gold)}
         <h2>Five zones, one hillside</h2>
         <p>The land climbs from the sand to the ridge, so every level keeps its own view of the water. What you buy depends on how high you want to sit and how much you want to decide yourself.</p>
       </div>
-      <div class="plan-wrap rev">
-        <img src="assets/masterplan.webp" alt="Site plan of Sandalwoods Resort showing the Beach Club, Bungalow Zone, Dune villa Zone, Dream villa Zone and Free Zone" loading="lazy" width="1100" height="1443">
+      <div class="plan-wrap">
+        <img class="rev" src="assets/masterplan.webp" alt="Site plan of Sandalwoods Resort showing the Beach Club, Bungalow Zone, Dune villa Zone, Dream villa Zone and Free Zone" loading="lazy" width="1100" height="1443">
         <ul class="zones">
           <li><span class="dot" aria-hidden="true"></span><div><span class="tag">On the sand</span><h3>Beach Club</h3><p>Pools, restaurant and beach service at the foot of the hill. Part of the masterplan and built in phases.</p></div></li>
           <li><span class="dot" aria-hidden="true"></span><div><span class="tag">Lower Zone</span><h3>Bungalow</h3><p>The closest units to the water. Sold with the land included in the price.</p></div></li>
@@ -480,7 +506,7 @@ footer a:hover{color:var(--gold)}
         <h2>What is planned, and what is already there</h2>
         <p>The resort is being built in phases. The list below is the masterplan, not an inventory of what is finished today. Ask us where each piece stands before you decide.</p>
       </div>
-      <div class="grid cols rev">
+      <div class="grid cols">
         <div class="card">
           <span class="num">01</span>
           <h3>At the resort</h3>
@@ -524,7 +550,7 @@ footer a:hover{color:var(--gold)}
         <h2>How a foreigner holds land in Indonesia</h2>
         <p>Indonesian law does not give a foreign national the same title as an Indonesian citizen. There are three routes, and the one that applies depends on who is buying. All of them are formalised before an authorised notary.</p>
       </div>
-      <div class="grid cols rev">
+      <div class="grid cols">
         <div class="card">
           <span class="num">Foreign individual</span>
           <h3>Up to 90 years</h3>
@@ -553,7 +579,7 @@ footer a:hover{color:var(--gold)}
         <h2>Payments tied to what is built</h2>
         <p>Nothing is paid against a promise. Each release is matched to a stage of the work that can be checked on site.</p>
       </div>
-      <div class="grid cols rev" style="margin-bottom:clamp(36px,4vw,56px)">
+      <div class="grid cols" style="margin-bottom:clamp(36px,4vw,56px)">
         <div class="card"><span class="num">Step 01</span><h3>€5,000 deposit</h3><p>The reservation deposit holds the plot or the unit while the paperwork is prepared.</p></div>
         <div class="card"><span class="num">Step 02</span><h3>Land over 3 months</h3><p>The land is paid across three months, against its own contract.</p></div>
         <div class="card"><span class="num">Step 03</span><h3>Four payments of 25%</h3><p>The villa is paid in four instalments, each one released against a construction milestone.</p></div>
@@ -685,22 +711,88 @@ footer a:hover{color:var(--gold)}
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 (function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGSAP = !!(window.gsap && window.ScrollTrigger);
+
   // Cabecera: solida en cuanto se sale del hero.
   var hdr = document.getElementById('hdr');
   var onScroll = function(){ hdr.classList.toggle('on', window.scrollY > 40); };
   onScroll();
   addEventListener('scroll', onScroll, {passive:true});
 
-  // Revelado al entrar en pantalla. Sin IntersectionObserver, todo visible.
-  if ('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, {rootMargin:'0px 0px -8% 0px', threshold:.06});
-    document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+  // Grano de fondo, igual que en B2K: textura sutil para que las secciones
+  // planas no se vean esteriles. No se pone si se pidio menos movimiento
+  // (aunque es estatico, es fiel al mismo espiritu que apaga el resto).
+  if (!reduceMotion){
+    var g = document.createElement('div');
+    g.className = 'grain';
+    document.body.appendChild(g);
+  }
+
+  if (hasGSAP && !reduceMotion){
+    document.documentElement.classList.add('gsap-on');
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Bloques grandes (los .rev de siempre): mismo fade+up, ahora coordinado
+    // por ScrollTrigger.batch en vez de un IntersectionObserver a pelo.
+    gsap.set('.rev', {autoAlpha:0, y:24});
+    ScrollTrigger.batch('.rev', {
+      start:'top 90%',
+      once:true,
+      onEnter: function(els){
+        // clearProps quita el estilo inline al terminar; sin la clase .in,
+        // el elemento volveria a caer en el opacity:0 de base de .rev.
+        els.forEach(function(el){ el.classList.add('in'); });
+        gsap.to(els, {autoAlpha:1, y:0, duration:.9, ease:'power2.out', stagger:.1, clearProps:'transform,opacity,visibility'});
+      }
+    });
+
+    // Grupos que antes aparecian en bloque de golpe: ahora cada elemento
+    // entra por su cuenta, con un pequeno desfase entre ellos.
+    [
+      ['.mosaic figure', .07],
+      ['.cols .card', .09],
+      ['.zones li', .08],
+      ['.facts li', .06]
+    ].forEach(function(group){
+      var sel = group[0], gap = group[1];
+      if (!document.querySelector(sel)) return;
+      gsap.set(sel, {autoAlpha:0, y:18});
+      ScrollTrigger.batch(sel, {
+        start:'top 92%',
+        once:true,
+        onEnter: function(els){ gsap.to(els, {autoAlpha:1, y:0, duration:.7, ease:'power2.out', stagger:gap, clearProps:'transform,opacity,visibility'}); }
+      });
+    });
+
+    // Hero: el titular y el CTA entran en cascada al cargar, en vez de
+    // aparecer los cuatro de golpe.
+    gsap.from('.hero .eyebrow, .hero h1, .hero .lede, .hero p, .hero-cta', {
+      autoAlpha:0, y:22, duration:1, ease:'power2.out', stagger:.09, delay:.15, clearProps:'transform,opacity,visibility'
+    });
+
+    // Paralaje suave del fondo del hero al hacer scroll (independiente del
+    // zoom Ken Burns, que vive en la propia imagen — aqui se mueve el
+    // contenedor, no la imagen, para que las dos animaciones no se pisen).
+    gsap.to('.hero-bg', {
+      yPercent:14, ease:'none',
+      scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}
+    });
   } else {
-    document.querySelectorAll('.rev').forEach(function(el){ el.classList.add('in'); });
+    // Sin GSAP (fallo de CDN) o con "menos movimiento" pedido: el revelado
+    // de toda la vida, con IntersectionObserver simple.
+    if ('IntersectionObserver' in window && !reduceMotion){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, {rootMargin:'0px 0px -8% 0px', threshold:.06});
+      document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+    } else {
+      document.querySelectorAll('.rev').forEach(function(el){ el.classList.add('in'); });
+    }
   }
 
   // Galeria de cada vivienda: la miniatura cambia la imagen grande.
