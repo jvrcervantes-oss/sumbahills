@@ -193,6 +193,9 @@ function unquote($s) {
 
 function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 
+/** 'Not Interested' → 'not-interested', para la clase CSS que le da su color */
+function statusSlug($s) { return strtolower(str_replace(' ', '-', (string)$s)); }
+
 /** 2000000 → 'Rp2.000.000' (separador de miles indonesio) */
 function idr($n) { return 'Rp' . number_format((float)$n, 0, ',', '.'); }
 
@@ -294,6 +297,21 @@ td.meta{vertical-align:top}
 .meta-form select:focus,.meta-form input[type="text"]:focus{border-color:var(--tg);background:#fff}
 .meta-form button{align-self:flex-start;background:var(--tg);color:var(--rl);border:none;border-radius:7px;padding:6px 14px;font-family:var(--sans);font-weight:600;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .meta-form button:hover{background:var(--tg-dark)}
+
+/* Color por estado del lead: para leer de un vistazo dónde está cada uno sin
+   abrir el desplegable. El de "Closed" reutiliza el acento de la marca a
+   propósito — es el estado que dispara el bono de venta. */
+.st-select{font-weight:600;border-left-width:4px}
+.meta-form select.st-new{border-left-color:#9C9284;color:#6B6459;background:#fff}
+.meta-form select.st-contacted{border-left-color:#3B6FA6;color:#2C5480;background:rgba(59,111,166,.08)}
+.meta-form select.st-interested{border-left-color:#2F8F5B;color:#256E46;background:rgba(47,143,91,.08)}
+.meta-form select.st-not-interested{border-left-color:#B5473A;color:#93392E;background:rgba(181,71,58,.08)}
+.meta-form select.st-closed{border-left-color:var(--tg);color:var(--tg-dark);background:rgba(139,94,60,.1)}
+option.st-new{color:#6B6459}
+option.st-contacted{color:#2C5480}
+option.st-interested{color:#256E46}
+option.st-not-interested{color:#93392E}
+option.st-closed{color:var(--tg-dark)}
 
 /* Condiciones del equipo */
 .terms{margin-top:26px}
@@ -406,9 +424,9 @@ footer{border-top:1px solid var(--line);max-width:1180px;margin:40px auto 0;padd
                 <input type="hidden" name="action" value="save_meta">
                 <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
                 <input type="hidden" name="key" value="<?= e($r['key']) ?>">
-                <select name="status">
+                <select name="status" class="st-select st-<?= e(statusSlug($r['status'])) ?>" onchange="this.className='st-select st-'+this.value.toLowerCase().replace(/ /g,'-')">
                   <?php foreach (STATUSES as $s): ?>
-                    <option value="<?= e($s) ?>"<?= $s === $r['status'] ? ' selected' : '' ?>><?= e($s) ?></option>
+                    <option class="st-<?= e(statusSlug($s)) ?>" value="<?= e($s) ?>"<?= $s === $r['status'] ? ' selected' : '' ?>><?= e($s) ?></option>
                   <?php endforeach; ?>
                 </select>
                 <input type="text" name="note" maxlength="500" value="<?= e($r['note']) ?>" placeholder="Note…">
