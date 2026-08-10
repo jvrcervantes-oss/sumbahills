@@ -50,9 +50,10 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-// El frontend ya exige el "+" de país, pero el endpoint es público: se repite aquí
-// para que un POST directo no cuele un número sin prefijo.
-if (!preg_match('/^\+\d{7,15}$/', preg_replace('/[\s()-]/', '', $whatsapp))) {
+// El campo es opcional en varios formularios del sitio (p.ej. el calco de Claude Design no lo
+// exige): solo se valida el formato si de verdad se mandó algo, para no rechazar un lead válido
+// que simplemente no dejó teléfono.
+if ($whatsapp !== '' && !preg_match('/^\+\d{7,15}$/', preg_replace('/[\s()-]/', '', $whatsapp))) {
     http_response_code(422);
     echo json_encode(['ok' => false, 'error' => 'whatsapp']);
     exit;
