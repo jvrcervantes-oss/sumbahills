@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sumba Hills — Where Luxury Is Lived Barefoot</title>
-<meta name="description" content="Discover a way of living in harmony with its surroundings. Pure, natural and extraordinary. Your plot in paradise, from €20,000.">
+<meta name="description" content="Discover a way of living in harmony with its surroundings. Pure, natural and extraordinary. Your plot in paradise, from €29,900.">
 <link rel="canonical" href="https://sumbahills.lawangproperties.com/">
 <link rel="icon" href="assets/dc-import/favicon.png">
 <meta name="robots" content="index,follow">
@@ -14,17 +14,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 /*
-  Calco literal (10-ago-2026, tarde) del import de Claude Design "Sumba Hills
-  Coming Soon.dc.html" (proyecto "Sumbahill landing page design",
-  4f046abd-fcbb-45c5-8205-0a40901c9f67). Por instrucción explícita del owner
-  ("Borra TODO lo que tienes... copia esta") NO se sustituye ningún dato del
-  archivo original: mismo copy, mismos precios, mismo contacto, mismas fotos
-  (descargadas a assets/dc-import/, no hotlinked, para no depender de un
-  dominio que ya no operamos — ver contexto/proyecto_sumbahills.md). El
-  runtime propio del editor (support.js, React, DCLogic, sc-if, data-props)
-  se retira: es andamiaje del editor de diseño, no algo desplegable, y su
-  única función (colores por defecto, mostrar/ocultar el bloque de stats) ya
-  está resuelta con los valores que trae el propio archivo.
+  Base: calco literal (10-ago-2026, tarde) del import de Claude Design "Sumba
+  Hills Coming Soon.dc.html" (proyecto "Sumbahill landing page design",
+  4f046abd-fcbb-45c5-8205-0a40901c9f67) — composición, paleta y tipografía
+  (Cormorant Garamond + Jost) tal cual el archivo original.
+  Contenido: el owner pidió después devolver el contacto y los precios REALES
+  del proyecto (+62 811-3820-0932 / sumbahills@lawangproperties.com, las 4
+  viviendas reales Bungalow/Dune/Dream/Plots con sus fotos y precios propios
+  en vez de las 5 del archivo de referencia, que no son de este proyecto) —
+  ver contexto/proyecto_sumbahills.md. Fotos propias en assets/, las del
+  import (mapa, isla, masterplan) siguen en assets/dc-import/ (no hotlinked).
+  El runtime propio del editor de diseño (support.js, React, DCLogic, sc-if,
+  data-props) no se usa: es andamiaje del editor, no algo desplegable.
+  Microanimaciones: revelado al hacer scroll (.rev/.rev-group + IntersectionObserver)
+  y hover/active en botones, tarjetas e iconos (.sh-btn/.sh-link/.sh-card/.sh-icon),
+  respetando prefers-reduced-motion.
 */
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#EFE7D8;color:#2E3D31;font-family:'Jost',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -36,10 +40,35 @@ img{max-width:100%;height:auto;display:block}
 @keyframes sh-rise{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes sh-fade{0%{opacity:0}100%{opacity:1}}
 .sh-submit:hover{background:#9C7A4E}
+
+/* ── microanimaciones ───────────────────────────────────────────
+   Revelado al hacer scroll (.rev/.rev-group, activado por JS con
+   IntersectionObserver) y hover/active en interactivos. Vanilla, sin
+   dependencias nuevas — coherente con el resto de la página. */
+.rev{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rev.in{opacity:1;transform:none}
+
+.sh-link{transition:color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1)}
+.sh-link:hover{transform:translateX(3px)}
+
+.sh-btn{transition:background .25s ease,color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1),box-shadow .25s ease}
+.sh-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(46,61,49,.4)}
+.sh-btn:active{transform:scale(.97);transition-duration:.1s}
+
+.sh-icon{transition:transform .25s cubic-bezier(.23,1,.32,1),opacity .25s ease;display:inline-flex}
+.sh-icon:hover{transform:scale(1.18)}
+
+.sh-card{transition:transform .35s cubic-bezier(.23,1,.32,1),border-color .35s ease}
+.sh-card:hover{transform:translateY(-6px);border-color:rgba(226,210,182,.55)}
+.sh-card img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.sh-card:hover img{transform:scale(1.05)}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .sh-hero-img{animation:none}
   [style*="sh-rise"],[style*="sh-fade"]{animation:none !important;opacity:1 !important}
+  .rev{opacity:1;transform:none;transition:none}
+  .sh-link:hover,.sh-btn:hover,.sh-btn:active,.sh-icon:hover,.sh-card:hover,.sh-card:hover img{transform:none}
 }
 </style>
 </head>
@@ -47,18 +76,18 @@ img{max-width:100%;height:auto;display:block}
 <div style="width:100%;overflow-x:hidden">
 
   <div style="display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;background:#EFE7D8;padding:11px clamp(18px,4vw,56px);border-bottom:1px solid rgba(46,61,49,.12)">
-    <a href="https://wa.me/34687959509" style="display:inline-flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.06em;color:#2E3D31">
+    <a href="https://wa.me/6281138200932" class="sh-link" style="display:inline-flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.06em;color:#2E3D31">
       <img src="assets/dc-import/icon-whatsapp.svg" alt="WhatsApp" style="width:15px;height:15px;display:block">
-      +34 687 95 95 09
+      +62 811-3820-0932
     </a>
     <nav style="display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap">
-      <a href="#sumba" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">The island</a>
-      <a href="#dream" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Choose your dream</a>
-      <a href="#masterplan" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Masterplan</a>
-      <a href="#contact" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#9C7A4E">Contact</a>
+      <a href="#sumba" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">The island</a>
+      <a href="#dream" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Choose your dream</a>
+      <a href="#masterplan" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Masterplan</a>
+      <a href="#contact" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#9C7A4E">Contact</a>
       <div style="display:flex;align-items:center;gap:9px">
-        <a href="https://www.instagram.com/sumbahills/"><img src="assets/dc-import/icon-social-1-brown.svg" alt="Instagram" style="width:17px;height:17px;display:block"></a>
-        <a href="https://sumbahill.com/"><img src="assets/dc-import/icon-social-2-brown.svg" alt="Social" style="width:17px;height:17px;display:block"></a>
+        <a href="https://www.instagram.com/sumbahills/" class="sh-icon"><img src="assets/dc-import/icon-social-1-brown.svg" alt="Instagram" style="width:17px;height:17px;display:block"></a>
+        <a href="https://lawangproperties.com" class="sh-icon" target="_blank" rel="noopener"><img src="assets/dc-import/icon-social-2-brown.svg" alt="Lawang Properties" style="width:17px;height:17px;display:block"></a>
       </div>
     </nav>
   </div>
@@ -96,144 +125,132 @@ img{max-width:100%;height:auto;display:block}
           <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,248,242,.8);margin-top:9px">Hotel service in your villa</div>
         </div>
         <div style="padding:20px 16px;background:rgba(43,58,38,.34);backdrop-filter:blur(3px)">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:#E2D2B6">17%</div>
-          <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,248,242,.8);margin-top:9px">Projected annual return</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:#E2D2B6">€69,000</div>
+          <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,248,242,.8);margin-top:9px">Villas from</div>
         </div>
       </div>
 
-      <a href="#sumba" style="margin-top:40px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(251,248,242,.45);padding-bottom:5px;animation:sh-fade 1.8s ease .9s both">Explore</a>
+      <a href="#sumba" class="sh-link" style="margin-top:40px;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(251,248,242,.45);padding-bottom:5px;animation:sh-fade 1.8s ease .9s both">Explore</a>
     </div>
   </section>
 
   <section style="background:#EFE7D8;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px);display:flex;flex-direction:column;align-items:center;text-align:center">
-    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;max-width:22ch;text-wrap:balance">Your plot in paradise <em style="font-style:italic;color:#9C7A4E">from €20,000</em></h2>
-    <p style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(46,61,49,.78);margin-top:20px;max-width:58ch;text-wrap:pretty">Over 90 oceanfront plots facing an untouched Indian Ocean, with guaranteed views over a virgin beach and the chance to build a luxury villa with its own infinity pool.</p>
-    <img src="assets/dc-import/map-islands.svg" alt="From Bali to Sumba" style="width:min(100%,860px);height:auto;margin-top:40px;opacity:.9">
-    <p style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,61,49,.55);margin-top:30px">Backed by <strong style="font-weight:500;color:#9C7A4E">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:#9C7A4E">LAWANG</strong></p>
+    <h2 class="rev" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;max-width:22ch;text-wrap:balance">Your plot in paradise <em style="font-style:italic;color:#9C7A4E">from €29,900</em></h2>
+    <p class="rev" style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(46,61,49,.78);margin-top:20px;max-width:58ch;text-wrap:pretty">Over 90 oceanfront plots facing an untouched Indian Ocean, with guaranteed views over a virgin beach and the chance to build a luxury villa with its own infinity pool.</p>
+    <img class="rev" src="assets/dc-import/map-islands.svg" alt="From Bali to Sumba" style="width:min(100%,860px);height:auto;margin-top:40px;opacity:.9">
+    <p class="rev" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,61,49,.55);margin-top:30px">Backed by <strong style="font-weight:500;color:#9C7A4E">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:#9C7A4E">LAWANG</strong></p>
   </section>
 
   <section id="sumba" style="background:#FBF8F2;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px)">
     <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(32px,5vw,64px);align-items:center">
-      <div>
+      <div class="rev">
         <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9C7A4E">A gem still to be discovered</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.2vw,52px);line-height:1.1;color:#2E3D31;margin-top:16px;max-width:18ch;text-wrap:balance">Discover the island of Sumba</h2>
-        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:22px;text-wrap:pretty"><strong style="font-weight:500;color:#2E3D31">SumbaHills™</strong> sits in Sumba, an authentic island of the Indonesian archipelago where nature remains untouched and time seems to stand still.</p>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:22px;text-wrap:pretty"><strong style="font-weight:500;color:#2E3D31">Sumba Hills</strong> sits in Sumba, an authentic island of the Indonesian archipelago where nature remains untouched and time seems to stand still.</p>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">In Indonesia's southernmost reach, Sumba is cooled by the Antarctic current — an outdoor climate all year round, with lows of 21º and highs of 33º. Sunny days are the norm and starlit nights an everyday spectacle.</p>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">World-class nature is on your doorstep: ancestral waterfalls, endless beaches and villages that still keep millenary traditions — alongside beach clubs and resorts such as the award-winning NIHI Sumba, Lelewatu, Umarato and Sanubari.</p>
-        <a href="https://sumbahill.com/descubre-sumba/" style="display:inline-block;margin-top:28px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#2E3D31;border-bottom:1px solid rgba(156,122,78,.7);padding-bottom:6px">Discover Sumba, the paradise by the sea</a>
+        <a href="#dream" class="sh-link" style="display:inline-block;margin-top:28px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#2E3D31;border-bottom:1px solid rgba(156,122,78,.7);padding-bottom:6px">See the villas and plots</a>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <img src="assets/dc-import/sumba-pic-1.jpg" alt="Sumba landscape" style="grid-column:1/-1;width:100%;aspect-ratio:16/9;object-fit:cover;display:block">
-        <img src="assets/dc-import/sumba-pic-2.jpg" alt="Sumba nature" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
-        <img src="assets/dc-import/sumba-pic-3.jpg" alt="Sumba coastline" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
+      <div class="rev-group" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <img class="rev" src="assets/dc-import/sumba-pic-1.jpg" alt="Sumba landscape" loading="lazy" style="grid-column:1/-1;width:100%;aspect-ratio:16/9;object-fit:cover;display:block">
+        <img class="rev" src="assets/dc-import/sumba-pic-2.jpg" alt="Sumba nature" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
+        <img class="rev" src="assets/dc-import/sumba-pic-3.jpg" alt="Sumba coastline" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block">
       </div>
     </div>
   </section>
 
   <section id="dream" style="background:#2B3A26;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px);color:#FBF8F2">
     <div style="max-width:1180px;margin:0 auto">
-      <div style="text-align:center;max-width:56ch;margin:0 auto">
+      <div class="rev" style="text-align:center;max-width:56ch;margin:0 auto">
         <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#E2D2B6">Villas &amp; plots</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;margin-top:14px">Choose your dream</h2>
-        <p style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(251,248,242,.78);margin-top:18px;text-wrap:pretty">Five ways to own a piece of Sumba — from a turnkey pool suite to a blank canvas facing the Indian Ocean.</p>
+        <p style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(251,248,242,.78);margin-top:18px;text-wrap:pretty">Four ways to own a piece of Sumba — from a turnkey beachfront bungalow to a blank canvas facing the Indian Ocean.</p>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:clamp(18px,2.4vw,30px);margin-top:clamp(38px,5vw,60px)">
+      <div class="rev-group" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:clamp(18px,2.4vw,30px);margin-top:clamp(38px,5vw,60px)">
 
-        <article style="display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
-          <img src="assets/dc-import/suite-1.jpg" alt="Pool Suite" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <article class="rev sh-card" style="overflow:hidden;display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
+          <img src="assets/bungalow-ext.webp" alt="Bungalow villa: exterior with private pool under a thatched roof" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
           <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
             <div>
-              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Pool Suite</h3>
+              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Bungalow</h3>
+              <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">1 bedroom villa · Beachfront</p>
+            </div>
+            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">The only unit here that comes with its land: one bedroom with its own bathroom, an open kitchen, an outdoor area and a private pool, a short walk from the beach club.</p>
+            <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(251,248,242,.16);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">€69,000</span>
+              <span style="font-size:10.5px;color:rgba(251,248,242,.8)">Land included</span>
+            </div>
+            <a href="#contact" class="sh-link" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">Ask about this villa</a>
+          </div>
+        </article>
+
+        <article class="rev sh-card" style="overflow:hidden;display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
+          <img src="assets/dune-ext.webp" alt="Dune villa: exterior with terrace and private pool" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+          <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
+            <div>
+              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Dune</h3>
               <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">1 bedroom villa</p>
             </div>
-            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">Our exclusive one-bedroom Pool Suite combines privacy and comfort with an open-concept kitchen, private pool and panoramic sea views from every main space.</p>
+            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">You choose the land, we build your home: one bedroom with en-suite bathroom, a living room open to the kitchen, and a pool on the terrace.</p>
             <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(251,248,242,.16);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
               <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €69,000</span>
+              <span style="font-size:10.5px;color:rgba(251,248,242,.8)">Land not included</span>
             </div>
-            <a href="https://sumbahill.com/villas/villa-suite/" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">See the investment</a>
+            <a href="#contact" class="sh-link" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">Ask about this villa</a>
           </div>
         </article>
 
-        <article style="display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
-          <img src="assets/dc-import/santai-1.jpg" alt="Villa Santai" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <article class="rev sh-card" style="overflow:hidden;display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
+          <img src="assets/dream-ext.webp" alt="Dream villa: exterior with pool terrace" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
           <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
             <div>
-              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Villa Santai</h3>
-              <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">1 bedroom villa · 150 m²</p>
+              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Dream</h3>
+              <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">2 bedroom villa · 76 m²</p>
             </div>
-            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">An elegant one-bedroom villa with en-suite bathroom, open-concept kitchen, a bright living area, private outdoor space and an exclusive pool set in nature.</p>
-            <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(251,248,242,.16);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €79,000</span>
-            </div>
-            <a href="https://sumbahill.com/villas/villa-santai/" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">See the investment</a>
-          </div>
-        </article>
-
-        <article style="display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
-          <img src="assets/dc-import/paradise2-1.jpg" alt="Villa Paradise, two bedrooms" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
-          <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
-            <div>
-              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Villa Paradise</h3>
-              <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">2 bedroom villa · 125 m²</p>
-            </div>
-            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">Two bedrooms with en-suite bathrooms, an open-concept kitchen, comfortable living areas and a private pool — the balance between luxury and nature.</p>
+            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">The high ground and the widest view. Two bedrooms, each with its own bathroom, around a living room that opens onto the pool terrace.</p>
             <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(251,248,242,.16);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
               <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €89,000</span>
               <span style="font-size:10.5px;color:rgba(251,248,242,.8)">Land not included</span>
             </div>
-            <a href="https://sumbahill.com/villas/villa-paradise/" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">See the investment</a>
+            <a href="#contact" class="sh-link" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">Ask about this villa</a>
           </div>
         </article>
 
-        <article style="display:flex;flex-direction:column;background:rgba(251,248,242,.05);border:1px solid rgba(251,248,242,.16)">
-          <img src="assets/dc-import/paradise1-1.jpg" alt="Villa Paradise, one bedroom" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
-          <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
-            <div>
-              <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Villa Paradise</h3>
-              <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">1 bedroom villa · 75 m²</p>
-            </div>
-            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.76);text-wrap:pretty">One bedroom with en-suite bathroom, open-concept kitchen, a comfortable living area and a private pool to enjoy Sumba's exclusive way of life.</p>
-            <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(251,248,242,.16);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €69,000</span>
-              <span style="font-size:10.5px;color:rgba(251,248,242,.8)">Land not included</span>
-            </div>
-            <a href="https://sumbahill.com/villas/villa-paradise-2/" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">See the investment</a>
-          </div>
-        </article>
-
-        <article style="display:flex;flex-direction:column;background:rgba(226,210,182,.12);border:1px solid rgba(226,210,182,.4)">
-          <img src="assets/dc-import/parcelas-1.jpg" alt="Oceanfront plots" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <article class="rev sh-card" style="overflow:hidden;display:flex;flex-direction:column;background:rgba(226,210,182,.12);border:1px solid rgba(226,210,182,.4)">
+          <img src="assets/plots-coast.webp" alt="Coastline and hillside where the Free Zone plots are located" loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
           <div style="display:flex;flex-direction:column;flex:1;gap:12px;padding:26px 24px 24px">
             <div>
               <h3 style="font-family:'Cormorant Garamond',serif;font-weight:400;font-size:29px;line-height:1.1">Plots</h3>
               <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#E2D2B6;margin-top:7px">From 210 m²</p>
             </div>
-            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.8);text-wrap:pretty">Exclusive plots with direct Indian Ocean views — a blank canvas in one of Sumba's most privileged enclaves, where architecture, nature and lifestyle shape a truly unique property.</p>
+            <p style="font-size:13.5px;line-height:1.7;font-weight:300;color:rgba(251,248,242,.8);text-wrap:pretty">Your land, your rules. Plots from 210 m² with a direct view of the Indian Ocean, inside a masterplan written to protect long-term value. Build with our team or bring your own architect.</p>
             <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(226,210,182,.35);display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €125 / m²</span>
+              <span style="font-family:'Cormorant Garamond',serif;font-size:25px;color:#E2D2B6">From €29,900</span>
+              <span style="font-size:10.5px;color:rgba(251,248,242,.8)">Plot only</span>
             </div>
-            <a href="https://sumbahill.com/villas/parcelas/" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">See the investment</a>
+            <a href="#contact" class="sh-link" style="font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#FBF8F2;border-bottom:1px solid rgba(226,210,182,.6);padding-bottom:5px;align-self:flex-start">Ask about this plot</a>
           </div>
         </article>
       </div>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,248,242,.5);margin-top:clamp(24px,3vw,36px);text-align:center">Villa interiors and layouts are architectural renders. Prices are indicative and confirmed in writing before any payment.</p>
     </div>
   </section>
 
   <section id="masterplan" style="background:#EFE7D8;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px)">
     <div style="max-width:1180px;margin:0 auto">
-      <div style="text-align:center;max-width:50ch;margin:0 auto">
+      <div class="rev" style="text-align:center;max-width:50ch;margin:0 auto">
         <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9C7A4E">Architecture set within nature</span>
-        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;margin-top:14px">Where SumbaHills™ is born</h2>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;margin-top:14px">Where Sumba Hills is born</h2>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(16px,2.4vw,28px);margin-top:clamp(34px,5vw,54px)">
-        <figure>
-          <img src="assets/dc-import/plano-1.jpg" alt="SumbaHills general masterplan" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
+      <div class="rev-group" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(16px,2.4vw,28px);margin-top:clamp(34px,5vw,54px)">
+        <figure class="rev">
+          <img src="assets/masterplan.webp" alt="Site plan of Sandalwoods Resort showing the Beach Club, Bungalow Zone, Dune villa Zone, Dream villa Zone and Free Zone" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
           <figcaption style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(46,61,49,.78);margin-top:12px">General masterplan</figcaption>
         </figure>
-        <figure>
-          <img src="assets/dc-import/plano-2.jpg" alt="Aerial view of the plots" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
-          <figcaption style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(46,61,49,.78);margin-top:12px">Aerial view of the plots</figcaption>
+        <figure class="rev">
+          <img src="assets/hills.webp" alt="Hillside above the coast where the Sandalwoods plots are located" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;display:block">
+          <figcaption style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(46,61,49,.78);margin-top:12px">The hillside from above</figcaption>
         </figure>
       </div>
     </div>
@@ -241,22 +258,22 @@ img{max-width:100%;height:auto;display:block}
 
   <section id="contact" style="background:#FBF8F2;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px)">
     <div style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(34px,5vw,64px)">
-      <div>
+      <div class="rev">
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.2vw,52px);line-height:1.12;color:#2E3D31;max-width:16ch;text-wrap:balance">The life you imagine begins with a decision</h2>
         <div style="display:flex;flex-direction:column;gap:14px;margin-top:30px">
-          <a href="mailto:sales@sumbahills.com" style="display:inline-flex;align-items:center;gap:11px;font-size:14px;color:#2E3D31">
+          <a href="mailto:sumbahills@lawangproperties.com" class="sh-link" style="display:inline-flex;align-items:center;gap:11px;font-size:14px;color:#2E3D31">
             <img src="assets/dc-import/icon-mail-green.svg" alt="" style="width:19px;height:15px;display:block">
-            sales@sumbahills.com
+            sumbahills@lawangproperties.com
           </a>
-          <a href="https://wa.me/34687959509" style="display:inline-flex;align-items:center;gap:11px;font-size:14px;color:#2E3D31">
+          <a href="https://wa.me/6281138200932" class="sh-link" style="display:inline-flex;align-items:center;gap:11px;font-size:14px;color:#2E3D31">
             <img src="assets/dc-import/icon-wa-green.svg" alt="" style="width:18px;height:18px;display:block">
-            +34 687 95 95 09
+            +62 811-3820-0932
           </a>
-          <a href="https://www.instagram.com/sumbahills/" style="display:inline-block;margin-top:4px"><img src="assets/dc-import/socials-green.svg" alt="Social media" style="height:20px;width:auto;display:block"></a>
+          <a href="https://www.instagram.com/sumbahills/" class="sh-icon" style="display:inline-block;margin-top:4px"><img src="assets/dc-import/socials-green.svg" alt="Social media" style="height:20px;width:auto;display:block"></a>
         </div>
       </div>
 
-      <form id="leadForm" novalidate>
+      <form id="leadForm" class="rev" novalidate>
         <div id="leadThanks" style="display:none;align-items:center;gap:12px;border:1px solid rgba(156,122,78,.45);padding:24px;background:#EFE7D8">
           <img src="assets/dc-import/icon-mail-green.svg" alt="" style="width:21px;height:16px;display:block">
           <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:21px;color:#2E3D31">Thank you. Our team will be in touch shortly.</p>
@@ -265,9 +282,9 @@ img{max-width:100%;height:auto;display:block}
           <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:23px;color:#2E3D31">I am interested in a visionary investment.</h3>
           <p style="font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#9C7A4E;margin-top:22px">What interests you?</p>
           <div style="display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:12px">
-            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Pool Suite" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Pool Suite</label>
-            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Villa Santai" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Villa Santai</label>
-            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Villas Paradise" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Villas Paradise</label>
+            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Bungalow" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Bungalow</label>
+            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Dune" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Dune</label>
+            <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Dream" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Dream</label>
             <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Plots" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Plots</label>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:26px">
@@ -277,7 +294,7 @@ img{max-width:100%;height:auto;display:block}
             <input id="f-city" type="text" name="city" placeholder="City" style="background:transparent;border:none;border-bottom:1px solid rgba(46,61,49,.3);outline:none;color:#2E3D31;font-family:'Jost',sans-serif;font-size:14px;padding:11px 2px">
           </div>
           <div class="hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="f-company">Company</label><input id="f-company" type="text" name="company" tabindex="-1" autocomplete="off"></div>
-          <button type="submit" class="sh-submit" style="display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:#2E3D31;color:#FBF8F2;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;padding:15px 26px;transition:background .25s ease">
+          <button type="submit" class="sh-submit sh-btn" style="display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:#2E3D31;color:#FBF8F2;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;padding:15px 26px">
             <img src="assets/dc-import/icon-mail-green.svg" alt="" style="width:15px;height:15px;display:block;filter:brightness(0) invert(1)">
             Send enquiry
           </button>
@@ -288,24 +305,48 @@ img{max-width:100%;height:auto;display:block}
   </section>
 
   <footer style="background:#2B3A26;color:rgba(251,248,242,.82);padding:clamp(42px,6vw,62px) clamp(22px,5vw,72px) 30px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center">
-    <img src="assets/dc-import/logo-footer.svg" alt="SumbaHills" style="width:min(104px,22vw);height:auto;border-radius:6px;opacity:.95">
-    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 28px">
-      <a href="mailto:sales@sumbahills.com" style="display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.05em;color:#FBF8F2">
+    <img class="rev" src="assets/dc-import/logo-footer.svg" alt="Sumba Hills" style="width:min(104px,22vw);height:auto;border-radius:6px;opacity:.95">
+    <div class="rev" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 28px">
+      <a href="mailto:sumbahills@lawangproperties.com" class="sh-link" style="display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.05em;color:#FBF8F2">
         <img src="assets/dc-import/icon-mail-green.svg" alt="" style="width:18px;height:14px;display:block;filter:brightness(0) invert(1)">
-        sales@sumbahills.com
+        sumbahills@lawangproperties.com
       </a>
-      <a href="https://wa.me/34687959509" style="display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.05em;color:#FBF8F2">
+      <a href="https://wa.me/6281138200932" class="sh-link" style="display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.05em;color:#FBF8F2">
         <img src="assets/dc-import/icon-wa-green.svg" alt="" style="width:17px;height:17px;display:block;filter:brightness(0) invert(1)">
-        +34 687 95 95 09
+        +62 811-3820-0932
       </a>
-      <a href="https://www.instagram.com/sumbahills/"><img src="assets/dc-import/socials-footer.svg" alt="Social media" style="height:19px;width:auto;display:block"></a>
+      <a href="https://www.instagram.com/sumbahills/" class="sh-icon"><img src="assets/dc-import/socials-footer.svg" alt="Social media" style="height:19px;width:auto;display:block"></a>
     </div>
-    <p style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(251,248,242,.8);border-top:1px solid rgba(251,248,242,.14);padding-top:24px;width:100%;max-width:820px">©2026 SumbaHills™ · All rights reserved</p>
+    <p class="rev" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(251,248,242,.8);border-top:1px solid rgba(251,248,242,.14);padding-top:24px;width:100%;max-width:820px">© Sumba Hills 2026 · All rights reserved</p>
   </footer>
 </div>
 
 <script>
 (function(){
+  // Revelado al hacer scroll: cada .rev entra con fade+up la primera vez que
+  // pisa el viewport. Los grupos (.rev-group, p.ej. las cards o el grid de
+  // fotos) reciben un pequeno desfase entre hermanos para que no aparezcan
+  // todos de golpe.
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion){
+    document.querySelectorAll('.rev-group').forEach(function(group){
+      var items = group.querySelectorAll(':scope > .rev');
+      items.forEach(function(el, i){ el.style.transitionDelay = (i * 90) + 'ms'; });
+    });
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+        });
+      }, {rootMargin:'0px 0px -8% 0px', threshold:.08});
+      document.querySelectorAll('.rev').forEach(function(el){ io.observe(el); });
+    } else {
+      document.querySelectorAll('.rev').forEach(function(el){ el.classList.add('in'); });
+    }
+  } else {
+    document.querySelectorAll('.rev').forEach(function(el){ el.classList.add('in'); });
+  }
+
   var form = document.getElementById('leadForm');
   var fields = document.getElementById('leadFields');
   var thanks = document.getElementById('leadThanks');
@@ -330,7 +371,7 @@ img{max-width:100%;height:auto;display:block}
       whatsapp: document.getElementById('f-phone').value.trim(),
       property: property,
       company: document.getElementById('f-company').value,
-      source: 'sumbahills-dc-calco'
+      source: 'sumbahills-web'
     }).toString();
 
     fetch('api/lead.php', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body})
