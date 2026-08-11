@@ -47,6 +47,13 @@ img{max-width:100%;height:auto;display:block}
    dependencias nuevas — coherente con el resto de la página. */
 .rev{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .rev.in{opacity:1;transform:none}
+/* Un par de imagenes se asientan a menos de opacity:1 (marca de agua del
+   mapa, logo del pie algo mas suave) — con esa opacidad puesta inline
+   ganaba por especificidad a .rev{opacity:0} y nunca llegaban a ocultarse
+   antes de entrar en pantalla. Los modificadores fijan el opacity final SOLO
+   tras .in, sin tocar el inline (retirado de esos dos <img>). */
+.rev.op9.in{opacity:.9}
+.rev.op95.in{opacity:.95}
 
 .sh-link{transition:color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 .sh-link:hover{transform:translateX(3px)}
@@ -117,7 +124,7 @@ img{max-width:100%;height:auto;display:block}
           <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,248,242,.8);margin-top:9px">Oceanfront plots</div>
         </div>
         <div style="padding:20px 16px;background:rgba(43,58,38,.34);backdrop-filter:blur(3px)">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:#E2D2B6">180º</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:34px;line-height:1;color:#E2D2B6">180°</div>
           <div style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(251,248,242,.8);margin-top:9px">Beachfront views</div>
         </div>
         <div style="padding:20px 16px;background:rgba(43,58,38,.34);backdrop-filter:blur(3px)">
@@ -137,7 +144,7 @@ img{max-width:100%;height:auto;display:block}
   <section style="background:#EFE7D8;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px);display:flex;flex-direction:column;align-items:center;text-align:center">
     <h2 class="rev" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;max-width:22ch;text-wrap:balance">Your plot in paradise <em style="font-style:italic;color:#9C7A4E">from €29,900</em></h2>
     <p class="rev" style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(46,61,49,.78);margin-top:20px;max-width:58ch;text-wrap:pretty">Over 90 oceanfront plots facing an untouched Indian Ocean, with guaranteed views over a virgin beach and the chance to build a luxury villa with its own infinity pool.</p>
-    <img class="rev" src="assets/dc-import/map-islands.svg" alt="From Bali to Sumba" style="width:min(100%,860px);height:auto;margin-top:40px;opacity:.9">
+    <img class="rev op9" src="assets/dc-import/map-islands.svg" alt="From Bali to Sumba" style="width:min(100%,860px);height:auto;margin-top:40px">
     <p class="rev" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,61,49,.55);margin-top:30px">Backed by <strong style="font-weight:500;color:#9C7A4E">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:#9C7A4E">LAWANG</strong></p>
   </section>
 
@@ -147,7 +154,7 @@ img{max-width:100%;height:auto;display:block}
         <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9C7A4E">A gem still to be discovered</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.2vw,52px);line-height:1.1;color:#2E3D31;margin-top:16px;max-width:18ch;text-wrap:balance">Discover the island of Sumba</h2>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:22px;text-wrap:pretty"><strong style="font-weight:500;color:#2E3D31">Sumba Hills</strong> sits in Sumba, an authentic island of the Indonesian archipelago where nature remains untouched and time seems to stand still.</p>
-        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">In Indonesia's southernmost reach, Sumba is cooled by the Antarctic current — an outdoor climate all year round, with lows of 21º and highs of 33º. Sunny days are the norm and starlit nights an everyday spectacle.</p>
+        <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">In Indonesia's southernmost reach, Sumba is cooled by the Antarctic current — an outdoor climate all year round, with lows of 21° and highs of 33°. Sunny days are the norm and starlit nights an everyday spectacle.</p>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">World-class nature is on your doorstep: ancestral waterfalls, endless beaches and villages that still keep millenary traditions — alongside beach clubs and resorts such as the award-winning NIHI Sumba, Lelewatu, Umarato and Sanubari.</p>
         <a href="#dream" class="sh-link" style="display:inline-block;margin-top:28px;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#2E3D31;border-bottom:1px solid rgba(156,122,78,.7);padding-bottom:6px">See the villas and plots</a>
       </div>
@@ -305,7 +312,7 @@ img{max-width:100%;height:auto;display:block}
   </section>
 
   <footer style="background:#2B3A26;color:rgba(251,248,242,.82);padding:clamp(42px,6vw,62px) clamp(22px,5vw,72px) 30px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center">
-    <img class="rev" src="assets/dc-import/logo-footer.svg" alt="Sumba Hills" style="width:min(104px,22vw);height:auto;border-radius:6px;opacity:.95">
+    <img class="rev op95" src="assets/dc-import/logo-footer.svg" alt="Sumba Hills" style="width:min(104px,22vw);height:auto;border-radius:6px">
     <div class="rev" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 28px">
       <a href="mailto:sumbahills@lawangproperties.com" class="sh-link" style="display:inline-flex;align-items:center;gap:9px;font-size:13px;letter-spacing:.05em;color:#FBF8F2">
         <img src="assets/dc-import/icon-mail-green.svg" alt="" style="width:18px;height:14px;display:block;filter:brightness(0) invert(1)">
