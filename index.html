@@ -33,13 +33,13 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#EFE7D8;color:#2E3D31;font-family:'Jost',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-a:hover{color:#9C7A4E}
+a:hover{color:#7D623E}
 html{scroll-behavior:smooth}
 img{max-width:100%;height:auto;display:block}
 @keyframes sh-kb{0%{transform:scale(1.06)}100%{transform:scale(1.18)}}
 @keyframes sh-rise{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 @keyframes sh-fade{0%{opacity:0}100%{opacity:1}}
-.sh-submit:hover{background:#9C7A4E}
+.sh-submit:hover{background:#7D623E}
 
 /* ── microanimaciones ───────────────────────────────────────────
    Revelado al hacer scroll (.rev/.rev-group, activado por JS con
@@ -58,8 +58,8 @@ img{max-width:100%;height:auto;display:block}
 .sh-link{transition:color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1)}
 .sh-link:hover{transform:translateX(3px)}
 
-.sh-btn{transition:background .25s ease,color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1),box-shadow .25s ease}
-.sh-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px rgba(46,61,49,.4)}
+.sh-btn{transition:background .25s ease,color .25s ease,border-color .25s ease,transform .2s cubic-bezier(.23,1,.32,1)}
+.sh-btn:hover{transform:translateY(-2px)}
 .sh-btn:active{transform:scale(.97);transition-duration:.1s}
 
 .sh-icon{transition:transform .25s cubic-bezier(.23,1,.32,1),opacity .25s ease;display:inline-flex}
@@ -69,6 +69,23 @@ img{max-width:100%;height:auto;display:block}
 .sh-card:hover{transform:translateY(-6px);border-color:rgba(226,210,182,.55)}
 .sh-card img{transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .sh-card:hover img{transform:scale(1.05)}
+
+/* ── menu movil ─────────────────────────────────────────────────
+   Por debajo de 860px el nav (4 enlaces + iconos sociales) no cabe
+   en una fila y el navegador lo envolvia en 3 filas apiladas encima
+   del hero, sin ninguna hamburguesa que lo sustituyera (medido en
+   390px, 2-sep-2026). Panel a pantalla completa, mismo patron que
+   el resto de paginas grandes del estudio. */
+.sh-menu-btn{display:none}
+.sh-menu-btn span{display:block;width:100%;height:1px;background:#2E3D31;transition:transform .3s ease}
+.sh-menu-btn.open span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.sh-menu-btn.open span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+@media (max-width:860px){
+  .sh-menu-btn{display:flex}
+  .sh-nav{position:fixed;inset:0;z-index:60;background:#EFE7D8;flex-direction:column;justify-content:center;align-items:center;gap:30px !important;transform:translateX(100%);transition:transform .4s cubic-bezier(.2,.7,.2,1);padding:24px;text-align:center}
+  .sh-nav.open{transform:translateX(0)}
+  .sh-nav a{font-size:14px !important}
+}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -82,16 +99,20 @@ img{max-width:100%;height:auto;display:block}
 <body>
 <div style="width:100%;overflow-x:hidden">
 
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:14px 24px;flex-wrap:wrap;background:#EFE7D8;padding:11px clamp(18px,4vw,56px);border-bottom:1px solid rgba(46,61,49,.12)">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:14px 24px;background:#EFE7D8;padding:11px clamp(18px,4vw,56px);border-bottom:1px solid rgba(46,61,49,.12);position:relative;z-index:70">
     <a href="https://wa.me/6281138200932" class="sh-link" style="display:inline-flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.06em;color:#2E3D31">
       <img src="assets/dc-import/icon-whatsapp.svg" alt="WhatsApp" style="width:15px;height:15px;display:block">
       +62 811-3820-0932
     </a>
-    <nav style="display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap">
+    <button type="button" id="navToggle" class="sh-menu-btn" aria-expanded="false" aria-controls="siteNav" aria-label="Open menu" style="flex-direction:column;justify-content:center;gap:7px;width:34px;height:34px;background:none;border:none;cursor:pointer;padding:0">
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="siteNav" class="sh-nav" style="display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap">
       <a href="#sumba" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">The island</a>
       <a href="#dream" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Choose your dream</a>
       <a href="#masterplan" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#2E3D31">Masterplan</a>
-      <a href="#contact" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#9C7A4E">Contact</a>
+      <a href="#contact" class="sh-link" style="font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:#7D623E">Contact</a>
       <div style="display:flex;align-items:center;gap:9px">
         <a href="https://www.instagram.com/sumbahills/" class="sh-icon"><img src="assets/dc-import/icon-social-1-brown.svg" alt="Instagram" style="width:17px;height:17px;display:block"></a>
         <a href="https://lawangproperties.com" class="sh-icon" target="_blank" rel="noopener"><img src="assets/dc-import/icon-social-2-brown.svg" alt="Lawang Properties" style="width:17px;height:17px;display:block"></a>
@@ -145,13 +166,13 @@ img{max-width:100%;height:auto;display:block}
     <h2 class="rev" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;max-width:22ch;text-wrap:balance">Your plot in paradise <em style="font-style:italic;color:#9C7A4E">from €29,900</em></h2>
     <p class="rev" style="font-size:14.5px;line-height:1.75;font-weight:300;color:rgba(46,61,49,.78);margin-top:20px;max-width:58ch;text-wrap:pretty">Over 90 oceanfront plots facing an untouched Indian Ocean, with guaranteed views over a virgin beach and the chance to build a luxury villa with its own infinity pool.</p>
     <img class="rev op9" src="assets/dc-import/map-islands.svg" alt="From Bali to Sumba" style="width:min(100%,860px);height:auto;margin-top:40px">
-    <p class="rev" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,61,49,.55);margin-top:30px">Backed by <strong style="font-weight:500;color:#9C7A4E">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:#9C7A4E">LAWANG</strong></p>
+    <p class="rev" style="font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(46,61,49,.73);margin-top:30px">Backed by <strong style="font-weight:500;color:#7D623E">Sandalwoods</strong> · secured by <strong style="font-weight:500;color:#7D623E">LAWANG</strong></p>
   </section>
 
   <section id="sumba" style="background:#FBF8F2;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px)">
     <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(32px,5vw,64px);align-items:center">
       <div class="rev">
-        <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9C7A4E">A gem still to be discovered</span>
+        <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#7D623E">A gem still to be discovered</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.2vw,52px);line-height:1.1;color:#2E3D31;margin-top:16px;max-width:18ch;text-wrap:balance">Discover the island of Sumba</h2>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:22px;text-wrap:pretty"><strong style="font-weight:500;color:#2E3D31">Sumba Hills</strong> sits in Sumba, an authentic island of the Indonesian archipelago where nature remains untouched and time seems to stand still.</p>
         <p style="font-size:14.5px;line-height:1.8;font-weight:300;color:rgba(46,61,49,.8);margin-top:16px;text-wrap:pretty">In Indonesia's southernmost reach, Sumba is cooled by the Antarctic current — an outdoor climate all year round, with lows of 21° and highs of 33°. Sunny days are the norm and starlit nights an everyday spectacle.</p>
@@ -240,14 +261,14 @@ img{max-width:100%;height:auto;display:block}
           </div>
         </article>
       </div>
-      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,248,242,.5);margin-top:clamp(24px,3vw,36px);text-align:center">Villa interiors and layouts are architectural renders. Prices are indicative and confirmed in writing before any payment.</p>
+      <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(251,248,242,.6);margin-top:clamp(24px,3vw,36px);text-align:center">Villa interiors and layouts are architectural renders. Prices are indicative and confirmed in writing before any payment.</p>
     </div>
   </section>
 
   <section id="masterplan" style="background:#EFE7D8;padding:clamp(56px,9vw,104px) clamp(22px,5vw,72px)">
     <div style="max-width:1180px;margin:0 auto">
       <div class="rev" style="text-align:center;max-width:50ch;margin:0 auto">
-        <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#9C7A4E">Architecture set within nature</span>
+        <span style="font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:#7D623E">Architecture set within nature</span>
         <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(30px,4.4vw,54px);line-height:1.1;color:#2E3D31;margin-top:14px">Where Sumba Hills is born</h2>
       </div>
       <div class="rev-group" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(16px,2.4vw,28px);margin-top:clamp(34px,5vw,54px)">
@@ -287,7 +308,7 @@ img{max-width:100%;height:auto;display:block}
         </div>
         <div id="leadFields">
           <h3 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;font-size:23px;color:#2E3D31">I am interested in a visionary investment.</h3>
-          <p style="font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#9C7A4E;margin-top:22px">What interests you?</p>
+          <p style="font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#7D623E;margin-top:22px">What interests you?</p>
           <div style="display:flex;flex-wrap:wrap;gap:10px 20px;margin-top:12px">
             <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Bungalow" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Bungalow</label>
             <label style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:300;color:#2E3D31;cursor:pointer"><input type="checkbox" name="interest" value="Dune" style="width:15px;height:15px;accent-color:#2E3D31;cursor:pointer">Dune</label>
@@ -353,6 +374,23 @@ img{max-width:100%;height:auto;display:block}
   } else {
     document.querySelectorAll('.rev').forEach(function(el){ el.classList.add('in'); });
   }
+
+  var navToggle = document.getElementById('navToggle');
+  var siteNav = document.getElementById('siteNav');
+  function closeNav(){
+    siteNav.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  navToggle.addEventListener('click', function(){
+    var isOpen = siteNav.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  siteNav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeNav(); });
 
   var form = document.getElementById('leadForm');
   var fields = document.getElementById('leadFields');
